@@ -1,0 +1,74 @@
+.back {
+  padding: 2px 0;
+  margin-bottom: 14px;
+  border: none;
+  background: transparent;
+  color: #00ffc8;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: #baffe8;
+}
+
+.sectionTitle {
+  margin: 0 0 10px;
+  color: #5f8f7f;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(0, 255, 200, 0.15);
+  color: #baffe8;
+  font-size: 13px;
+}
+
+.shortcutControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip {
+  padding: 3px 8px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  color: #00ffc8;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+}
+
+.recordButton {
+  padding: 3px 8px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background: transparent;
+  color: #7dffcf;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    background 0.1s,
+    color 0.1s;
+}
+
+.recordButton:hover {
+  background: rgba(0, 255, 200, 0.1);
+  color: #baffe8;
+}
+
+.hint {
+  margin: 8px 0 0;
+  color: #4a6e60;
+  font-size: 10.5px;
+  line-height: 1.5;
+}

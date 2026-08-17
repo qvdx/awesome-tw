@@ -8,9 +8,10 @@ export type MenuItem = {
 
 type MenuProps = {
   items: MenuItem[]
+  revealDelay?: number
 }
 
-export function Menu({ items }: MenuProps) {
+export function Menu({ items, revealDelay = 0 }: MenuProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export function Menu({ items }: MenuProps) {
   }, [items, selectedIndex])
 
   return (
-    <ul className={styles.menu} role="listbox">
+    <ul className={styles.menu} role="listbox" style={{ animationDelay: `${revealDelay}s` }}>
       {items.map((item, index) => {
         const isSelected = index === selectedIndex
         return (
