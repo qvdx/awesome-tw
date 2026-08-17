@@ -1,0 +1,59 @@
+.back {
+  padding: 2px 0;
+  margin-bottom: 14px;
+  border: none;
+  background: transparent;
+  color: #00ffc8;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: #baffe8;
+}
+
+.title {
+  margin: 0 0 4px;
+  color: #baffe8;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.subtitle {
+  margin: 0 0 16px;
+  color: #5f8f7f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.qrWrap {
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(0, 255, 200, 0.35);
+  border-radius: 4px;
+  background: #050505;
+  box-shadow: 0 0 10px rgba(0, 255, 176, 0.15) inset;
+}
+
+.copyButton {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background: transparent;
+  color: #7dffcf;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 0.1s,
+    color 0.1s;
+}
+
+.copyButton:hover {
+  background: rgba(0, 255, 200, 0.1);
+  color: #baffe8;
+}

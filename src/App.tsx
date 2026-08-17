@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { BootSequence } from './components/BootSequence'
+import { Coffee } from './components/Coffee'
 import { LauncherButton } from './components/LauncherButton'
 import { Menu, type MenuItem } from './components/Menu'
 import { Modal } from './components/Modal'
@@ -10,7 +11,7 @@ import { useShortcutConfig } from './hooks/useShortcutConfig'
 import { getPlayerName } from './lib/gameData'
 import { matchesShortcut } from './lib/shortcut'
 
-type Screen = 'menu' | 'settings'
+type Screen = 'menu' | 'settings' | 'coffee'
 
 export function App() {
   const launcherMount = useMountNode('#questlog_new', 'start')
@@ -41,7 +42,7 @@ export function App() {
     { label: 'Automações', onSelect: () => console.log('[awesome-tw-scripts] abrir Automações') },
     { label: 'Utilitários', onSelect: () => console.log('[awesome-tw-scripts] abrir Utilitários') },
     { label: 'Configurações', onSelect: () => setScreen('settings') },
-    { label: 'Pague um café', onSelect: () => console.log('[awesome-tw-scripts] abrir Pague um café') },
+    { label: 'Pague um café', onSelect: () => setScreen('coffee') },
     { label: 'Reportar um problema', onSelect: () => console.log('[awesome-tw-scripts] abrir Reportar um problema') },
   ]
 
@@ -61,6 +62,7 @@ export function App() {
         {screen === 'settings' && (
           <Settings shortcut={shortcut} onChangeShortcut={setShortcut} onBack={() => setScreen('menu')} />
         )}
+        {screen === 'coffee' && <Coffee onBack={() => setScreen('menu')} />}
       </Modal>
     </>
   )
