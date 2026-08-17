@@ -1,18 +1,91 @@
-.launcher {
-  cursor: pointer;
+@keyframes skullGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px rgba(0, 255, 176, 0.7));
+  }
+  50% {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 176, 1));
+  }
 }
 
-.icon {
+@keyframes glitchSplit {
+  0%,
+  93%,
+  100% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  94% {
+    opacity: 0.8;
+    transform: translate(-1.5px, 0.5px);
+  }
+  96% {
+    opacity: 0.8;
+    transform: translate(1.5px, -0.5px);
+  }
+  97% {
+    opacity: 0;
+  }
+}
+
+.launcher {
+  position: relative;
   display: flex;
-  width: 100%;
-  height: 100%;
   align-items: center;
   justify-content: center;
-  color: #151515;
-  font-size: 16px;
-  transition: color 0.15s;
+  width: 25px;
+  height: 25px;
+  margin: 10px;
+  cursor: pointer;
+  text-align: center;
+  background: #050505;
+  border: 1px solid rgba(0, 255, 176, 0.4);
+  border-radius: 3px;
+  box-shadow:
+    0 0 6px rgba(0, 255, 176, 0.35),
+    0 0 14px rgba(0, 255, 176, 0.15);
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
 }
 
-.launcher:hover .icon {
-  color: #7a0000;
+.launcher:hover {
+  border-color: rgba(0, 255, 176, 0.8);
+  box-shadow:
+    0 0 10px rgba(0, 255, 176, 0.6),
+    0 0 20px rgba(0, 255, 176, 0.3);
+}
+
+.iconWrap {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.iconLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  color: #00ffb0;
+}
+
+.iconLayer svg {
+  width: 100%;
+  height: 100%;
+}
+
+.base {
+  animation: skullGlow 2.4s ease-in-out infinite;
+}
+
+.glitchRed {
+  color: #ff2b6d;
+  opacity: 0;
+  animation: glitchSplit 4s infinite;
+}
+
+.glitchCyan {
+  color: #00e5ff;
+  opacity: 0;
+  animation: glitchSplit 4s infinite 0.05s;
 }
