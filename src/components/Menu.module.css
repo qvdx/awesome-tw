@@ -1,0 +1,30 @@
+.menu {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 2px;
+  color: #5f8f7f;
+  cursor: pointer;
+  transition:
+    background 0.1s,
+    color 0.1s;
+}
+
+.marker {
+  display: inline-block;
+  width: 12px;
+  color: #00ffc8;
+}
+
+.selected {
+  background: rgba(0, 255, 200, 0.08);
+  color: #baffe8;
+  text-shadow: 0 0 6px rgba(0, 255, 200, 0.5);
+}

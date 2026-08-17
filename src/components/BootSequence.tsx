@@ -1,12 +1,17 @@
 import styles from './BootSequence.module.css'
 
-const LINES = ['SYSTEM ONLINE', 'MODULES LOADED: 0', 'STATUS: STANDBY', 'AGUARDANDO INSTRUÇÕES_']
+type BootSequenceProps = {
+  username: string
+  activeScripts: number
+}
 
-export function BootSequence() {
+export function BootSequence({ username, activeScripts }: BootSequenceProps) {
+  const lines = [username, `SCRIPTS ATIVOS: ${activeScripts}`, 'TIER: FREE']
+
   return (
     <div>
-      {LINES.map((line, index) => (
-        <p key={line} className={styles.line} style={{ animationDelay: `${index * 0.18}s` }}>
+      {lines.map((line, index) => (
+        <p key={index} className={styles.line} style={{ animationDelay: `${index * 0.18}s` }}>
           {line}
         </p>
       ))}
