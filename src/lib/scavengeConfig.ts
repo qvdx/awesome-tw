@@ -1,3 +1,5 @@
+import { featureConfigKey } from './features'
+
 export type UnitId = 'spear' | 'sword' | 'axe' | 'light' | 'heavy'
 
 /** Unidades utilizáveis em coleta em qualquer mundo. Arqueiro/arqueiro a cavalo só existem em mundos com arqueiros. */
@@ -22,6 +24,8 @@ export type ScavengeConfig = {
   intervalHours: number
   autoUnlock: boolean
   troops: Record<UnitId, TroopRule>
+  /** true assim que o usuário salvar a configuração pela primeira vez — controla se dá pra ativar o toggle */
+  configured: boolean
 }
 
 export const DEFAULT_SCAVENGE_CONFIG: ScavengeConfig = {
@@ -34,4 +38,24 @@ export const DEFAULT_SCAVENGE_CONFIG: ScavengeConfig = {
     light: { enabled: false, reserve: 0 },
     heavy: { enabled: false, reserve: 0 },
   },
+  configured: false,
+}
+
+/**
+ * Leitura direta do localStorage (sem passar pelo hook do React) — usada pelo
+ * loop de coleta automática, que roda fora de qualquer componente e sempre
+ * precisa da config mais recente a cada ciclo, não de um valor "congelado".
+ */
+export function loadScavengeConfig(): ScavengeConfig {
+  try {
+    const raw = localStorage.getItem(featureConfigKey('auto-scavenge'))
+    if (!raw) return DEFAULT_SCAVENGE_CONFIG
+    return { ...DEFAULT_SCAVENGE_CONFIG, ...JSON.parse(raw) }
+  } catch {
+    return DEFAULT_SCAVENGE_CONFIG
+  }
+}
+
+export function saveScavengeConfig(config: ScavengeConfig): void {
+  localStorage.setItem(featureConfigKey('auto-scavenge'), JSON.stringify(config))
 }

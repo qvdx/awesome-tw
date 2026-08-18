@@ -1,21 +1,20 @@
-import { Settings as GearIcon } from 'lucide-react'
+import { Info, Settings as GearIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import styles from './Automations.module.css'
 import { ScavengeSettings } from './ScavengeSettings'
 import { Toggle } from './Toggle'
-import { useLocalStorage } from '../hooks/useLocalStorage'
-import { featureStorageKey } from '../lib/features'
+import { loadScavengeConfig } from '../lib/scavengeConfig'
 
 type AutomationsProps = {
+  autoScavengeEnabled: boolean
+  onChangeAutoScavengeEnabled: (enabled: boolean) => void
   onBack: () => void
 }
 
-export function Automations({ onBack }: AutomationsProps) {
-  const [autoScavengeEnabled, setAutoScavengeEnabled] = useLocalStorage(
-    featureStorageKey('auto-scavenge'),
-    false,
-  )
+export function Automations({ autoScavengeEnabled, onChangeAutoScavengeEnabled, onBack }: AutomationsProps) {
   const [configuringScavenge, setConfiguringScavenge] = useState(false)
+  // relido a cada render (inclusive ao voltar da tela de config) — leitura direta do localStorage, sem hook
+  const scavengeConfigured = loadScavengeConfig().configured
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -49,18 +48,27 @@ export function Automations({ onBack }: AutomationsProps) {
       <div className={styles.row}>
         <div className={styles.labelGroup}>
           <span className={autoScavengeEnabled ? styles.labelActive : undefined}>Coleta automática</span>
-          {autoScavengeEnabled && (
-            <button
-              type="button"
-              className={styles.gearIcon}
-              onClick={() => setConfiguringScavenge(true)}
-              aria-label="Configurar coleta automática"
-            >
-              <GearIcon size={18} strokeWidth={2.5} />
-            </button>
-          )}
+          <button
+            type="button"
+            className={styles.gearIcon}
+            onClick={() => setConfiguringScavenge(true)}
+            aria-label="Configurar coleta automática"
+          >
+            <GearIcon size={20} strokeWidth={2.5} />
+          </button>
         </div>
-        <Toggle checked={autoScavengeEnabled} onChange={setAutoScavengeEnabled} />
+        <div className={styles.controls}>
+          {!scavengeConfigured && (
+            <span
+              className={styles.infoIcon}
+              title="Configure a coleta (engrenagem) antes de ativar"
+              aria-label="Configure a coleta antes de ativar"
+            >
+              <Info size={18} strokeWidth={2.5} />
+            </span>
+          )}
+          <Toggle checked={autoScavengeEnabled} onChange={onChangeAutoScavengeEnabled} disabled={!scavengeConfigured} />
+        </div>
       </div>
     </div>
   )

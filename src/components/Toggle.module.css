@@ -33,6 +33,21 @@
   box-shadow: 0 0 11px rgba(0, 255, 200, 0.65);
 }
 
+.toggle:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.toggle:disabled:hover {
+  border-color: rgba(0, 255, 200, 0.4);
+  box-shadow: none;
+}
+
+.toggle:disabled:hover .knob {
+  border-color: rgba(0, 255, 200, 0.7);
+  transform: none;
+}
+
 .knob {
   box-sizing: border-box;
   flex-shrink: 0;

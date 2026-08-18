@@ -54,8 +54,8 @@
   display: flex;
   flex-direction: column;
   width: 92%;
-  max-width: 640px;
-  max-height: 82vh;
+  max-width: 760px;
+  max-height: 85vh;
   border: 1px solid rgba(0, 255, 200, 0.5);
   border-radius: 4px;
   background:
@@ -107,8 +107,8 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 12px 18px;
   border-bottom: 1px solid rgba(0, 255, 200, 0.35);
   background: rgba(0, 255, 200, 0.04);
 }
@@ -143,7 +143,7 @@
 .title {
   flex: 1;
   overflow: hidden;
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 0.5px;
   color: #7dffcf;
   white-space: nowrap;
@@ -162,13 +162,13 @@
 }
 
 .closeButton {
-  padding: 3px 8px;
+  padding: 4px 10px;
   border: 1px solid rgba(255, 77, 94, 0.6);
   border-radius: 2px;
   background: transparent;
   color: #ff8a94;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12.5px;
   cursor: pointer;
   transition:
     background 0.15s,
@@ -182,7 +182,7 @@
 
 .body {
   overflow: auto;
-  padding: 18px 20px 22px;
-  font-size: 13px;
+  padding: 22px 26px 26px;
+  font-size: 15px;
   line-height: 1.6;
 }

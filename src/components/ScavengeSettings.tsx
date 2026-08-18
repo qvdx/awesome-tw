@@ -1,19 +1,15 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './ScavengeSettings.module.css'
 import { Checkbox } from './Checkbox'
-import { useLocalStorage } from '../hooks/useLocalStorage'
-import { featureConfigKey } from '../lib/features'
-import { DEFAULT_SCAVENGE_CONFIG, SCAVENGE_UNITS, getUnitIconUrl, type ScavengeConfig, type UnitId } from '../lib/scavengeConfig'
+import { SCAVENGE_UNITS, getUnitIconUrl, loadScavengeConfig, saveScavengeConfig, type ScavengeConfig, type UnitId } from '../lib/scavengeConfig'
 
 type ScavengeSettingsProps = {
   onBack: () => void
 }
 
 export function ScavengeSettings({ onBack }: ScavengeSettingsProps) {
-  const [config, setConfig] = useLocalStorage<ScavengeConfig>(
-    featureConfigKey('auto-scavenge'),
-    DEFAULT_SCAVENGE_CONFIG,
-  )
+  const [config, setConfig] = useState<ScavengeConfig>(loadScavengeConfig)
+  const [justSaved, setJustSaved] = useState(false)
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -36,6 +32,19 @@ export function ScavengeSettings({ onBack }: ScavengeSettingsProps) {
         [unitId]: { ...config.troops[unitId], ...patch },
       },
     })
+    setJustSaved(false)
+  }
+
+  function handleChange(patch: Partial<ScavengeConfig>) {
+    setConfig({ ...config, ...patch })
+    setJustSaved(false)
+  }
+
+  function handleSave() {
+    const toSave = { ...config, configured: true }
+    saveScavengeConfig(toSave)
+    setConfig(toSave)
+    setJustSaved(true)
   }
 
   return (
@@ -56,7 +65,7 @@ export function ScavengeSettings({ onBack }: ScavengeSettingsProps) {
             step={0.5}
             className={styles.numberInput}
             value={config.intervalHours}
-            onChange={(event) => setConfig({ ...config, intervalHours: Number(event.target.value) || 0 })}
+            onChange={(event) => handleChange({ intervalHours: Number(event.target.value) || 0 })}
           />
           <span className={styles.unit}>horas</span>
         </div>
@@ -65,7 +74,7 @@ export function ScavengeSettings({ onBack }: ScavengeSettingsProps) {
       <div className={styles.rowCheckbox}>
         <Checkbox
           checked={config.autoUnlock}
-          onChange={(checked) => setConfig({ ...config, autoUnlock: checked })}
+          onChange={(checked) => handleChange({ autoUnlock: checked })}
           label="Desbloquear níveis de coleta automaticamente"
         />
       </div>
@@ -96,6 +105,10 @@ export function ScavengeSettings({ onBack }: ScavengeSettingsProps) {
           </div>
         )
       })}
+
+      <button type="button" className={styles.saveButton} onClick={handleSave}>
+        {justSaved ? 'salvo!' : 'salvar'}
+      </button>
     </div>
   )
 }

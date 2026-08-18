@@ -1,11 +1,11 @@
 .back {
   padding: 2px 0;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   border: none;
   background: transparent;
   color: #00ffc8;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13.5px;
   cursor: pointer;
 }
 
@@ -14,24 +14,24 @@
 }
 
 .title {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   color: #baffe8;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.04em;
 }
 
 .subtitle {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   color: #5f8f7f;
-  font-size: 12px;
+  font-size: 13.5px;
   line-height: 1.5;
 }
 
 .qrWrap {
   display: flex;
   justify-content: center;
-  padding: 12px;
-  margin-bottom: 14px;
+  padding: 14px;
+  margin-bottom: 16px;
   border: 1px solid rgba(0, 255, 200, 0.35);
   border-radius: 4px;
   background: #050505;
@@ -40,13 +40,13 @@
 
 .copyButton {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid rgba(0, 255, 200, 0.4);
   border-radius: 3px;
   background: transparent;
   color: #7dffcf;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13.5px;
   cursor: pointer;
   transition:
     background 0.1s,

@@ -1,11 +1,11 @@
 .back {
   padding: 2px 0;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   border: none;
   background: transparent;
   color: #00ffc8;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13.5px;
   cursor: pointer;
 }
 
@@ -14,16 +14,16 @@
 }
 
 .title {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   color: #baffe8;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.04em;
 }
 
 .sectionTitle {
-  margin: 16px 0 4px;
+  margin: 18px 0 6px;
   color: #5f8f7f;
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -36,15 +36,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
+  gap: 14px;
+  padding: 10px 0;
   border-top: 1px solid rgba(0, 255, 200, 0.15);
   color: #baffe8;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .rowCheckbox {
-  padding: 8px 0;
+  padding: 10px 0;
   border-top: 1px solid rgba(0, 255, 200, 0.15);
 }
 
@@ -52,23 +52,23 @@
 .reserveControl {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .unit {
   color: #5f8f7f;
-  font-size: 11.5px;
+  font-size: 13px;
 }
 
 .numberInput {
-  width: 52px;
-  padding: 3px 6px;
+  width: 60px;
+  padding: 4px 8px;
   border: 1px solid rgba(0, 255, 200, 0.4);
   border-radius: 3px;
   background: #050505;
   color: #baffe8;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13.5px;
   text-align: right;
   transition:
     border-color 0.15s,
@@ -95,21 +95,46 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
+  gap: 14px;
+  padding: 10px 0;
   border-top: 1px solid rgba(0, 255, 200, 0.15);
   color: #baffe8;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .troopInfo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .troopIcon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
+}
+
+.saveButton {
+  width: 100%;
+  margin-top: 18px;
+  padding: 10px;
+  border: 1px solid rgba(0, 255, 200, 0.5);
+  border-radius: 3px;
+  background: rgba(0, 255, 200, 0.08);
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.saveButton:hover {
+  border-color: #00ffc8;
+  background: rgba(0, 255, 200, 0.14);
+  box-shadow: 0 0 8px rgba(0, 255, 176, 0.35);
 }

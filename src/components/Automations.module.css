@@ -1,11 +1,11 @@
 .back {
   padding: 2px 0;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   border: none;
   background: transparent;
   color: #00ffc8;
   font-family: inherit;
-  font-size: 12px;
+  font-size: 13.5px;
   cursor: pointer;
 }
 
@@ -14,16 +14,16 @@
 }
 
 .title {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   color: #baffe8;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.04em;
 }
 
 .sectionTitle {
-  margin: 0 0 4px;
+  margin: 0 0 6px;
   color: #5f8f7f;
-  font-size: 11px;
+  font-size: 12.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -32,11 +32,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
+  gap: 14px;
+  padding: 10px 0;
   border-top: 1px solid rgba(0, 255, 200, 0.15);
   color: #baffe8;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .labelGroup {
@@ -82,4 +82,16 @@
 .gearIcon:hover {
   color: #00ffc8;
   transform: rotate(45deg);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.infoIcon {
+  display: inline-flex;
+  color: #ffcb47;
+  cursor: help;
 }

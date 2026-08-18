@@ -8,10 +8,12 @@ import { Menu, type MenuItem } from './components/Menu'
 import { Modal } from './components/Modal'
 import { Report } from './components/Report'
 import { Settings } from './components/Settings'
+import { useLocalStorage } from './hooks/useLocalStorage'
 import { useMountNode } from './hooks/useMountNode'
 import { useShortcutConfig } from './hooks/useShortcutConfig'
-import { countActiveFeatures } from './lib/features'
-import { getPlayerName } from './lib/gameData'
+import { countActiveFeatures, featureStorageKey } from './lib/features'
+import { getPlayerName, getVillageId } from './lib/gameData'
+import { startAutoScavengeLoop } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
 
 type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations'
@@ -21,6 +23,7 @@ export function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [screen, setScreen] = useState<Screen>('menu')
   const [shortcut, setShortcut] = useShortcutConfig()
+  const [autoScavengeEnabled, setAutoScavengeEnabled] = useLocalStorage(featureStorageKey('auto-scavenge'), false)
 
   useEffect(() => {
     function handleShortcut(event: KeyboardEvent) {
@@ -35,6 +38,18 @@ export function App() {
     document.addEventListener('keydown', handleShortcut)
     return () => document.removeEventListener('keydown', handleShortcut)
   }, [shortcut])
+
+  useEffect(() => {
+    if (!autoScavengeEnabled) return
+
+    const villageId = getVillageId()
+    if (villageId === null) {
+      console.error('[awesome-tw-scripts] não achei o ID da aldeia atual, coleta automática não vai rodar aqui')
+      return
+    }
+
+    return startAutoScavengeLoop(villageId)
+  }, [autoScavengeEnabled])
 
   function handleClose() {
     setIsOpen(false)
@@ -67,7 +82,13 @@ export function App() {
         )}
         {screen === 'coffee' && <Coffee onBack={() => setScreen('menu')} />}
         {screen === 'report' && <Report onBack={() => setScreen('menu')} />}
-        {screen === 'automations' && <Automations onBack={() => setScreen('menu')} />}
+        {screen === 'automations' && (
+          <Automations
+            autoScavengeEnabled={autoScavengeEnabled}
+            onChangeAutoScavengeEnabled={setAutoScavengeEnabled}
+            onBack={() => setScreen('menu')}
+          />
+        )}
       </Modal>
     </>
   )

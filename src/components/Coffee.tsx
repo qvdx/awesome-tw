@@ -39,7 +39,7 @@ export function Coffee({ onBack }: CoffeeProps) {
       <p className={styles.subtitle}>Se esse script te ajudou, um pix é sempre bem-vindo.</p>
 
       <div className={styles.qrWrap}>
-        <QrCode value={PIX_COPY_PASTE_CODE} size={176} />
+        <QrCode value={PIX_COPY_PASTE_CODE} size={200} />
       </div>
 
       <button type="button" className={styles.copyButton} onClick={handleCopy}>

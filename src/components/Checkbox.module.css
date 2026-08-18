@@ -10,8 +10,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   padding: 0;
   border: 1px solid rgba(0, 255, 200, 0.4);
   border-radius: 3px;
@@ -36,11 +36,11 @@
 }
 
 .check {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
 }
 
 .label {
   color: #baffe8;
-  font-size: 13px;
+  font-size: 15px;
 }
