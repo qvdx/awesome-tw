@@ -10,7 +10,7 @@ Userscript para o [Tribal Wars](https://www.tribalwars.com.br/) que adiciona um 
 
 1. Instale a extensão [Tampermonkey](https://www.tampermonkey.net/).
 2. [Clique aqui para instalar o AwesomeTW](https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js).
-3. Abra o jogo — um novo ícone (☠) aparece na barra de missões, ao lado do Nexus.
+3. Abra o jogo — um novo ícone (☠) aparece junto com o ícone das missões.
 
 Atualizações futuras chegam automaticamente pelo próprio Tampermonkey.
 
