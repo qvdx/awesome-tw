@@ -1,0 +1,89 @@
+name: Release
+
+# Não decide versão nem changelog sozinho: só publica quando percebe, depois
+# de um merge na main, que a versão do package.json mudou em relação à
+# última tag. Bump de versão e a seção correspondente no CHANGELOG.md são
+# sempre escritos manualmente no PR.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Verifica se a versão mudou
+        id: version
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          echo "pkg_version=$PKG_VERSION" >> "$GITHUB_OUTPUT"
+          if [ "v$PKG_VERSION" = "$LATEST_TAG" ]; then
+            echo "Versão ($PKG_VERSION) igual à última tag ($LATEST_TAG) — nada pra lançar."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Versão nova: $PKG_VERSION (última tag: ${LATEST_TAG:-nenhuma})"
+            echo "should_release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Extrai a seção do CHANGELOG.md
+        if: steps.version.outputs.should_release == 'true'
+        id: changelog
+        run: |
+          VERSION="${{ steps.version.outputs.pkg_version }}"
+          NOTES=$(awk -v ver="$VERSION" '
+            $0 ~ "^## \\[" ver "\\]" { found=1; next }
+            found && /^## \[/ { found=0 }
+            found { print }
+          ' CHANGELOG.md)
+
+          if [ -z "$(echo "$NOTES" | tr -d '[:space:]')" ]; then
+            echo "::error::Não achei a seção '## [$VERSION]' no CHANGELOG.md. Adicione as notas dessa versão antes de dar merge na main."
+            exit 1
+          fi
+
+          {
+            echo "notes<<EOF"
+            echo "$NOTES"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Instala e builda
+        if: steps.version.outputs.should_release == 'true'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Cria e envia a tag
+        if: steps.version.outputs.should_release == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ steps.version.outputs.pkg_version }}" -m "v${{ steps.version.outputs.pkg_version }}"
+          git push origin "v${{ steps.version.outputs.pkg_version }}"
+
+      - name: Cria a Release no GitHub
+        if: steps.version.outputs.should_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.pkg_version }}
+          name: v${{ steps.version.outputs.pkg_version }}
+          body: ${{ steps.changelog.outputs.notes }}
+          files: dist/awesometw.user.js
+          # nunca marcar como pre-release: o @updateURL/@downloadURL dependem do
+          # alias /releases/latest, que o GitHub ignora em releases marcadas como
+          # pre-release (mesmo pra versões alpha/beta no nome)
+          prerelease: false
