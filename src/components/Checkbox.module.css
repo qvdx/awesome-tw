@@ -1,0 +1,46 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background: transparent;
+  color: #00ffc8;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
+}
+
+.box:hover {
+  border-color: rgba(0, 255, 200, 0.8);
+  box-shadow: 0 0 5px rgba(0, 255, 176, 0.3);
+}
+
+.box.checked {
+  border-color: #00ffc8;
+  background: rgba(0, 255, 200, 0.1);
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+}
+
+.check {
+  width: 11px;
+  height: 11px;
+}
+
+.label {
+  color: #baffe8;
+  font-size: 13px;
+}

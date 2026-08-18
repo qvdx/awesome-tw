@@ -1,0 +1,115 @@
+.back {
+  padding: 2px 0;
+  margin-bottom: 14px;
+  border: none;
+  background: transparent;
+  color: #00ffc8;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: #baffe8;
+}
+
+.title {
+  margin: 0 0 16px;
+  color: #baffe8;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.sectionTitle {
+  margin: 16px 0 4px;
+  color: #5f8f7f;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.sectionTitle:first-of-type {
+  margin-top: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(0, 255, 200, 0.15);
+  color: #baffe8;
+  font-size: 13px;
+}
+
+.rowCheckbox {
+  padding: 8px 0;
+  border-top: 1px solid rgba(0, 255, 200, 0.15);
+}
+
+.intervalControl,
+.reserveControl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unit {
+  color: #5f8f7f;
+  font-size: 11.5px;
+}
+
+.numberInput {
+  width: 52px;
+  padding: 3px 6px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background: #050505;
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 12px;
+  text-align: right;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.numberInput:focus {
+  border-color: #00ffc8;
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+  outline: none;
+}
+
+.numberInput::-webkit-outer-spin-button,
+.numberInput::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.numberInput {
+  -moz-appearance: textfield;
+}
+
+.troopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(0, 255, 200, 0.15);
+  color: #baffe8;
+  font-size: 13px;
+}
+
+.troopInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.troopIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}

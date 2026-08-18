@@ -1,0 +1,85 @@
+.back {
+  padding: 2px 0;
+  margin-bottom: 14px;
+  border: none;
+  background: transparent;
+  color: #00ffc8;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: #baffe8;
+}
+
+.title {
+  margin: 0 0 16px;
+  color: #baffe8;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.sectionTitle {
+  margin: 0 0 4px;
+  color: #5f8f7f;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid rgba(0, 255, 200, 0.15);
+  color: #baffe8;
+  font-size: 13px;
+}
+
+.labelGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+.labelActive {
+  background: linear-gradient(45deg, #00e6a8 0%, #00e6a8 45%, #ffffff 50%, #00e6a8 55%, #00e6a8 100%);
+  background-size: 300% 100%;
+  background-repeat: no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+.gearIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #5f8f7f;
+  cursor: pointer;
+  transition:
+    color 0.1s,
+    transform 0.1s;
+}
+
+.gearIcon:hover {
+  color: #00ffc8;
+  transform: rotate(45deg);
+}

@@ -1,0 +1,60 @@
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  width: 34px;
+  height: 18px;
+  padding: 2px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 9px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
+}
+
+.toggle:hover {
+  border-color: rgba(0, 255, 200, 0.7);
+  box-shadow: 0 0 5px rgba(0, 255, 176, 0.25);
+}
+
+.toggle.on {
+  justify-content: flex-end;
+  border-color: #00ffc8;
+  background: rgba(0, 255, 200, 0.08);
+  box-shadow: 0 0 7px rgba(0, 255, 176, 0.45);
+}
+
+.toggle.on:hover {
+  border-color: #baffe8;
+  box-shadow: 0 0 11px rgba(0, 255, 200, 0.65);
+}
+
+.knob {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(0, 255, 200, 0.7);
+  border-radius: 50%;
+  background: transparent;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.toggle:hover .knob {
+  border-color: rgba(0, 255, 200, 0.95);
+  transform: scale(1.1);
+}
+
+.toggle.on .knob {
+  border-color: #00ffc8;
+  background: #00ffc8;
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.9);
+}
