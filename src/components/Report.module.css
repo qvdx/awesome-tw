@@ -36,8 +36,18 @@
   border-top: 1px solid rgba(0, 255, 200, 0.15);
 }
 
-.label {
+.labelGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: #5f8f7f;
+}
+
+.labelIcon {
+  flex-shrink: 0;
+}
+
+.label {
   font-size: 12.5px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
