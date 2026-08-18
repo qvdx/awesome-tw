@@ -7,6 +7,12 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.2] - 2026-08-17
+
+### Corrigido
+
+- Nome do jogador aparecia como "jogador desconhecido" e a coleta automática não conseguia enxergar o jogo: o build final ganha `@grant GM_addStyle` (por causa do CSS Modules), o que faz o Tampermonkey rodar o script num sandbox isolado da página. Trocado `window.game_data`/`window.TribalWars` por `unsafeWindow`, a ponte oficial do Tampermonkey pra esses casos.
+
 ## [0.1.0-alpha.1] - 2026-08-17
 
 ### Adicionado
@@ -18,5 +24,6 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.1...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.2...HEAD
+[0.1.0-alpha.2]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.1...v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/qvdx/awesome-tw/releases/tag/v0.1.0-alpha.1

@@ -21,13 +21,18 @@ declare global {
   interface Window {
     TribalWars?: TribalWarsGlobal
   }
+  // eslint-disable-next-line no-var -- ambiente do Tampermonkey, precisa ser `var` pra mesclar com a declaração em gameData.ts
+  var unsafeWindow: Window
 }
 
+// Ver o comentário em gameData.ts: o build final acaba ganhando `@grant GM_addStyle`,
+// o que faz o Tampermonkey sandboxar o script — só `unsafeWindow` enxerga o TribalWars
+// de verdade que o jogo expõe na página.
 function getTribalWars(): TribalWarsGlobal {
-  if (!window.TribalWars) {
+  if (!unsafeWindow.TribalWars) {
     throw new Error('window.TribalWars não está disponível nesta página.')
   }
-  return window.TribalWars
+  return unsafeWindow.TribalWars
 }
 
 /** Wrapper em Promise pro TribalWars.get nativo do jogo — mesmo mecanismo, mesmo CSRF, mesma sessão. */
