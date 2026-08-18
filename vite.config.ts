@@ -19,7 +19,11 @@ export default defineConfig({
         description: 'Utilitários para o Tribalwars (tribalwars.com.br)',
         author: 'qvdx',
         match: ['*://*.tribalwars.com.br/*'],
-        grant: [],
+        // `unsafeWindow` é explícito de propósito: o build ganha `@grant GM_addStyle`
+        // (por causa do CSS Modules), o que já tira o script do modo "sem sandbox" —
+        // sem declarar unsafeWindow aqui, `game_data`/`TribalWars` do jogo ficam
+        // inacessíveis pro script.
+        grant: ['unsafeWindow'],
         updateURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
         downloadURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
       },
