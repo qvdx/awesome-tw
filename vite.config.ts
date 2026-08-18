@@ -8,16 +8,18 @@ export default defineConfig({
     monkey({
       entry: 'src/main.tsx',
       userscript: {
-        name: 'Awesome TW Scripts',
-        namespace: 'https://github.com/qvdx/awesome-tw-scripts',
-        version: '0.1.0',
+        name: 'AwesomeTW',
+        namespace: 'https://github.com/qvdx/awesome-tw',
+        version: '0.1.0-alpha.1',
         description: 'Utilitários para o Tribalwars (tribalwars.com.br)',
         author: 'qvdx',
         match: ['*://*.tribalwars.com.br/*'],
         grant: [],
+        updateURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
+        downloadURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
       },
       build: {
-        fileName: 'awesome-tw-scripts.user.js',
+        fileName: 'awesometw.user.js',
       },
     }),
   ],

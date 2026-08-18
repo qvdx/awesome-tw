@@ -1,5 +1,5 @@
-const FEATURE_PREFIX = 'awesome-tw-scripts:feature:'
-const CONFIG_PREFIX = 'awesome-tw-scripts:config:'
+const FEATURE_PREFIX = 'awesometw:feature:'
+const CONFIG_PREFIX = 'awesometw:config:'
 
 export function featureStorageKey(id: string): string {
   return `${FEATURE_PREFIX}${id}`

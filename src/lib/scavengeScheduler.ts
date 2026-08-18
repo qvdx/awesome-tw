@@ -42,7 +42,7 @@ export function startAutoScavengeLoop(villageId: number): () => void {
         delayMs = Math.max(MIN_FALLBACK_MS, config.intervalHours * 60 * 60 * 1000)
       }
     } catch (error) {
-      console.error('[awesome-tw-scripts] falha no ciclo de coleta automática, tentando de novo em breve', error)
+      console.error('[awesometw] falha no ciclo de coleta automática, tentando de novo em breve', error)
     }
 
     if (!stopped) {

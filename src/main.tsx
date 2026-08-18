@@ -4,7 +4,7 @@ import { App } from './App'
 
 function mount() {
   const container = document.createElement('div')
-  container.id = 'awesome-tw-scripts-root'
+  container.id = 'awesometw-root'
   document.body.append(container)
 
   createRoot(container).render(

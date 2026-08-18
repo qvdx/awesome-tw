@@ -36,7 +36,7 @@ export function Modal({ open, onClose, children }: ModalProps) {
             <span className={styles.lightGreen} />
           </div>
           <div className={styles.title}>
-            root@tribalwars<span className={styles.prompt}>:~$</span> awesome-tw-scripts
+            root@tribalwars<span className={styles.prompt}>:~$</span> awesometw
             <span className={styles.cursor}>▋</span>
           </div>
           <button className={styles.closeButton} onClick={onClose} type="button" aria-label="Fechar">

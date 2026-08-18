@@ -1,4 +1,4 @@
-# Awesome TW Scripts
+# AwesomeTW
 
 Userscript para o [Tribal Wars](https://www.tribalwars.com.br/) (`tribalwars.com.br`) construído com Vite + React + TypeScript, empacotado como um único `.user.js` via [vite-plugin-monkey](https://github.com/lisonge/vite-plugin-monkey).
 
@@ -41,7 +41,7 @@ Abra o link impresso no terminal (`http://127.0.0.1:5173/`) uma vez para instala
 npm run build
 ```
 
-Gera `dist/awesome-tw-scripts.user.js`, o arquivo final para instalar/distribuir (arraste na aba de extensões do Tampermonkey, ou abra o arquivo direto no navegador).
+Gera `dist/awesometw.user.js`, o arquivo final para instalar/distribuir (arraste na aba de extensões do Tampermonkey, ou abra o arquivo direto no navegador).
 
 ## Estrutura do projeto
 
@@ -59,6 +59,10 @@ src/
     ├── planAutoScavenge.ts / runAutoScavengeOnce.ts
     └── scavengeScheduler.ts  # loop autoagendado da coleta automática
 ```
+
+## Changelog
+
+Veja [CHANGELOG.md](./CHANGELOG.md).
 
 ## Licença
 

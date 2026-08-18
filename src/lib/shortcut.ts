@@ -12,7 +12,7 @@ export const DEFAULT_SHORTCUT: ShortcutConfig = {
   code: 'Space',
 }
 
-const STORAGE_KEY = 'awesome-tw-scripts:launcher-shortcut'
+const STORAGE_KEY = 'awesometw:launcher-shortcut'
 
 export function loadShortcut(): ShortcutConfig {
   try {

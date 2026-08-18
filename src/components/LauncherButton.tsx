@@ -29,7 +29,7 @@ function SkullBadgeIcon() {
 
 export function LauncherButton({ onClick }: LauncherButtonProps) {
   return (
-    <div className={styles.launcher} id="awesome-tw-launcher" title="Abrir Awesome TW Scripts" onClick={onClick}>
+    <div className={styles.launcher} id="awesometw-launcher" title="Abrir AwesomeTW" onClick={onClick}>
       <div className={styles.iconWrap}>
         <span className={`${styles.iconLayer} ${styles.base}`}>
           <SkullBadgeIcon />

@@ -44,7 +44,7 @@ export function App() {
 
     const villageId = getVillageId()
     if (villageId === null) {
-      console.error('[awesome-tw-scripts] não achei o ID da aldeia atual, coleta automática não vai rodar aqui')
+      console.error('[awesometw] não achei o ID da aldeia atual, coleta automática não vai rodar aqui')
       return
     }
 
@@ -58,7 +58,7 @@ export function App() {
 
   const menuItems: MenuItem[] = [
     { label: 'Automações', onSelect: () => setScreen('automations') },
-    { label: 'Utilitários', onSelect: () => console.log('[awesome-tw-scripts] abrir Utilitários') },
+    { label: 'Utilitários', onSelect: () => console.log('[awesometw] abrir Utilitários') },
     { label: 'Configurações', onSelect: () => setScreen('settings') },
     { label: 'Pague um café', onSelect: () => setScreen('coffee') },
     { label: 'Reportar um problema', onSelect: () => setScreen('report') },
