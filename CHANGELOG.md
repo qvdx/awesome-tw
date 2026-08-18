@@ -7,6 +7,12 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.3] - 2026-08-18
+
+### Corrigido
+
+- "Desbloquear níveis de coleta automaticamente" não fazia nada: a opção existia na tela de configurações e era salva, mas nenhum código chamava a ação de desbloqueio de fato. Agora, quando habilitada, cada ciclo pede o desbloqueio do próximo nível bloqueado disponível (respeitando a ordem sequencial do jogo — um nível só pode ser desbloqueado depois do anterior).
+
 ## [0.1.0-alpha.2] - 2026-08-17
 
 ### Corrigido
@@ -24,6 +30,7 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.2...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.3...HEAD
+[0.1.0-alpha.3]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.2...v0.1.0-alpha.3
 [0.1.0-alpha.2]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.1...v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/qvdx/awesome-tw/releases/tag/v0.1.0-alpha.1

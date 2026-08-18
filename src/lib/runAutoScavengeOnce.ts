@@ -1,13 +1,24 @@
+import { fetchScavengeVillageState, findNextUnlockTarget, startUnlockLevel } from './fetchScavengeLevels'
 import { planAutoScavenge } from './planAutoScavenge'
 import type { ScavengeConfig } from './scavengeConfig'
 import { buildSquadRequests, sendScavengeSquads, type SendSquadsResponse } from './sendScavengeSquads'
 
-/** Roda um ciclo de coleta automática: planeja e já dispara o envio das tropas. */
+/**
+ * Roda um ciclo de coleta automática: se configurado, pede o desbloqueio do
+ * próximo nível disponível, depois planeja e já dispara o envio das tropas
+ * pros níveis já desbloqueados e ociosos.
+ */
 export async function runAutoScavengeOnce(
   villageId: number,
-  troopsConfig: ScavengeConfig['troops'],
+  config: Pick<ScavengeConfig, 'troops' | 'autoUnlock'>,
 ): Promise<SendSquadsResponse> {
-  const { plan, unitCarryFactor } = await planAutoScavenge(villageId, troopsConfig)
+  if (config.autoUnlock) {
+    const state = await fetchScavengeVillageState(villageId)
+    const target = findNextUnlockTarget(state.levels)
+    if (target) await startUnlockLevel(villageId, target.level)
+  }
+
+  const { plan, unitCarryFactor } = await planAutoScavenge(villageId, config.troops)
   const requests = buildSquadRequests(villageId, plan, unitCarryFactor)
   return sendScavengeSquads(requests)
 }

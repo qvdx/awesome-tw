@@ -28,7 +28,7 @@ export function startAutoScavengeLoop(villageId: number): () => void {
 
     try {
       const config = loadScavengeConfig()
-      await runAutoScavengeOnce(villageId, config.troops)
+      await runAutoScavengeOnce(villageId, config)
 
       const state = await fetchScavengeVillageState(villageId)
       const activeReturnTimes = state.levels
