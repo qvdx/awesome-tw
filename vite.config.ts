@@ -27,6 +27,11 @@ export default defineConfig({
         updateURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
         downloadURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
       },
+      server: {
+        // sem isso, `unsafeWindow` não existe em modo dev — o script roda direto
+        // na página (não sandboxado), então precisa desse shim pra ganhar o alias
+        mountGmApi: true,
+      },
       build: {
         fileName: 'awesometw.user.js',
       },
