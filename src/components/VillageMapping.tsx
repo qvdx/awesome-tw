@@ -3,6 +3,13 @@ import { useEffect, useState } from 'react'
 import styles from './VillageMapping.module.css'
 import { Checkbox } from './Checkbox'
 import { fetchNearbyVillages, getNearbyVillagesFetchedAt, type NearbyVillage } from '../lib/villageMap'
+import { formatTravelTime, getUnitSpeeds, type UnitSpeeds } from '../lib/worldSpeeds'
+
+const TRAVEL_UNITS = ['light', 'ram', 'catapult', 'snob'] as const
+
+function unitIconUrl(unitId: string): string {
+  return `/graphic/unit/unit_${unitId}.png`
+}
 
 type VillageMappingProps = {
   onBack: () => void
@@ -16,17 +23,40 @@ function formatRelativeTime(fetchedAt: number): string {
   return `atualizado há ${hours}h`
 }
 
-function villageLabel(village: NearbyVillage): string {
-  return village.type === 'bonus' ? `Bônus: ${village.bonusText}` : 'Bárbara'
+function villageTypeLabel(village: NearbyVillage): string {
+  return village.type === 'bonus' ? 'Bônus' : 'Bárbara'
 }
+
+const DISTANCE_FILTERS: { label: string; maxDistance: number | null }[] = [
+  { label: 'Todas as distâncias', maxDistance: null },
+  { label: 'Até 10 campos', maxDistance: 10 },
+  { label: 'Até 15 campos', maxDistance: 15 },
+  { label: 'Até 20 campos', maxDistance: 20 },
+]
+
+type TypeFilter = 'all' | 'barbarian' | 'bonus'
+
+const TYPE_FILTERS: { label: string; value: TypeFilter }[] = [
+  { label: 'Bárbaras e bônus', value: 'all' },
+  { label: 'Só bárbaras', value: 'barbarian' },
+  { label: 'Só bônus', value: 'bonus' },
+]
 
 export function VillageMapping({ onBack }: VillageMappingProps) {
   const [villages, setVillages] = useState<NearbyVillage[] | null>(null)
   const [fetchedAt, setFetchedAt] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [query, setQuery] = useState('')
+  const [typeFilter, setTypeFilter] = useState<TypeFilter>('all')
+  const [maxDistance, setMaxDistance] = useState<number | null>(null)
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
+  const [unitSpeeds, setUnitSpeeds] = useState<UnitSpeeds | null>(null)
+
+  useEffect(() => {
+    getUnitSpeeds()
+      .then(setUnitSpeeds)
+      .catch((err) => console.error('[awesometw] falha ao buscar a velocidade das tropas do mundo', err))
+  }, [])
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -71,9 +101,11 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
       .finally(() => setLoading(false))
   }
 
-  const filteredVillages = (villages ?? []).filter((village) =>
-    `${villageLabel(village)} ${village.x}|${village.y}`.toLowerCase().includes(query.toLowerCase()),
-  )
+  const filteredVillages = (villages ?? []).filter((village) => {
+    const matchesType = typeFilter === 'all' || village.type === typeFilter
+    const matchesDistance = maxDistance === null || village.distance <= maxDistance
+    return matchesType && matchesDistance
+  })
   const allFilteredSelected = filteredVillages.length > 0 && filteredVillages.every((v) => selectedIds.has(v.id))
 
   function toggleVillage(id: number, checked: boolean) {
@@ -117,7 +149,8 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
         <>
           <div className={styles.sectionHeaderRow}>
             <span className={styles.unit}>
-              {fetchedAt ? formatRelativeTime(fetchedAt) : ''} · {villages.length} aldeias
+              {fetchedAt ? formatRelativeTime(fetchedAt) : ''} · {filteredVillages.length} de {villages.length}{' '}
+              aldeias
             </span>
             <button
               type="button"
@@ -130,13 +163,30 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
             </button>
           </div>
 
-          <input
-            type="text"
-            placeholder="Buscar por tipo ou coordenada..."
-            className={styles.searchInput}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
+          <div className={styles.filtersRow}>
+            <select
+              className={styles.distanceSelect}
+              value={typeFilter}
+              onChange={(event) => setTypeFilter(event.target.value as TypeFilter)}
+            >
+              {TYPE_FILTERS.map((filter) => (
+                <option key={filter.value} value={filter.value}>
+                  {filter.label}
+                </option>
+              ))}
+            </select>
+            <select
+              className={styles.distanceSelect}
+              value={maxDistance ?? ''}
+              onChange={(event) => setMaxDistance(event.target.value === '' ? null : Number(event.target.value))}
+            >
+              {DISTANCE_FILTERS.map((filter) => (
+                <option key={filter.label} value={filter.maxDistance ?? ''}>
+                  {filter.label}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <div className={styles.villageRow}>
             <div className={styles.villageInfo}>
@@ -148,17 +198,36 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
             {filteredVillages.length > 0 ? (
               filteredVillages.map((village) => (
                 <div key={village.id} className={styles.villageRow}>
-                  <div className={styles.villageInfo}>
-                    <Checkbox
-                      checked={selectedIds.has(village.id)}
-                      onChange={(checked) => toggleVillage(village.id, checked)}
-                    />
-                    <span className={village.type === 'bonus' ? styles.bonusTag : undefined}>
-                      {villageLabel(village)}
-                    </span>
-                    <span className={styles.unit}>
-                      ({village.x}|{village.y})
-                    </span>
+                  <div className={styles.villageColumn}>
+                    <div className={styles.villageInfo}>
+                      <Checkbox
+                        checked={selectedIds.has(village.id)}
+                        onChange={(checked) => toggleVillage(village.id, checked)}
+                      />
+                      <span className={village.type === 'bonus' ? styles.bonusTag : undefined}>
+                        {villageTypeLabel(village)}
+                      </span>
+                      <span className={styles.unit}>
+                        ({village.x}|{village.y}) · {village.points.toLocaleString('pt-BR')} pts
+                      </span>
+                    </div>
+                    {village.type === 'bonus' && village.bonusText && (
+                      <span className={styles.bonusDescription}>{village.bonusText}</span>
+                    )}
+                    {unitSpeeds && (
+                      <div className={styles.travelTimes}>
+                        {TRAVEL_UNITS.map((unitId) => {
+                          const minutesPerField = unitSpeeds[unitId]
+                          if (!minutesPerField) return null
+                          return (
+                            <span key={unitId} className={styles.travelTime}>
+                              <img src={unitIconUrl(unitId)} alt="" className={styles.travelIcon} />
+                              {formatTravelTime(village.distance, minutesPerField)}
+                            </span>
+                          )
+                        })}
+                      </div>
+                    )}
                   </div>
                   <span className={styles.unit}>{village.distance.toFixed(1)}</span>
                 </div>

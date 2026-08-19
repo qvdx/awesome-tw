@@ -134,11 +134,16 @@
   animation: spin 0.6s linear infinite;
 }
 
-.searchInput {
-  box-sizing: border-box;
-  width: 100%;
+.filtersRow {
+  display: flex;
+  gap: 10px;
   margin-top: 10px;
-  padding: 6px 10px;
+}
+
+.distanceSelect {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 6px 8px;
   border: 1px solid rgba(0, 255, 200, 0.4);
   border-radius: 3px;
   background: #050505;
@@ -150,7 +155,7 @@
     box-shadow 0.15s;
 }
 
-.searchInput:focus {
+.distanceSelect:focus {
   border-color: #00ffc8;
   box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
   outline: none;
@@ -167,14 +172,56 @@
   font-size: 15px;
 }
 
+.villageColumn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
 .villageInfo {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+.bonusDescription {
+  padding-left: 32px;
+  color: #d99a3b;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.travelTimes {
+  display: flex;
+  align-self: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 32px;
+  padding: 5px 10px;
+  border: 1px solid rgba(0, 255, 200, 0.15);
+  border-radius: 8px;
+  background: rgba(0, 255, 200, 0.05);
+}
+
+.travelTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #5f8f7f;
+  font-size: 12px;
+}
+
+.travelIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
 .villageList {
   max-height: 320px;
+  padding-right: 10px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 255, 200, 0.45) rgba(0, 255, 200, 0.06);
