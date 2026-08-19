@@ -7,6 +7,12 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.4] - 2026-08-19
+
+### Adicionado
+
+- **Coleta automática em múltiplas aldeias**: nova seção "ALDEIAS" na tela de configuração, com busca (a partir de 8 aldeias), lista com scroll e checkbox "selecionar todas". Sem seleção explícita, o comportamento continua o mesmo de antes (só a aldeia da aba aberta); com aldeias selecionadas, a automação passa a rodar em todas elas ao mesmo tempo, cada uma com seu próprio ciclo/horário de retorno de tropas.
+
 ## [0.1.0-alpha.3] - 2026-08-18
 
 ### Corrigido
@@ -30,7 +36,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.3...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.4...HEAD
+[0.1.0-alpha.4]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.3...v0.1.0-alpha.4
 [0.1.0-alpha.3]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.2...v0.1.0-alpha.3
 [0.1.0-alpha.2]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.1...v0.1.0-alpha.2
 [0.1.0-alpha.1]: https://github.com/qvdx/awesome-tw/releases/tag/v0.1.0-alpha.1
