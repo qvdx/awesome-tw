@@ -57,3 +57,9 @@ export function startAutoScavengeLoop(villageId: number): () => void {
     if (timeoutId !== undefined) window.clearTimeout(timeoutId)
   }
 }
+
+/** Roda um loop de coleta independente por aldeia (horários de retorno diferem entre elas). */
+export function startAutoScavengeLoops(villageIds: number[]): () => void {
+  const stopFns = villageIds.map(startAutoScavengeLoop)
+  return () => stopFns.forEach((stop) => stop())
+}

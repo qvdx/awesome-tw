@@ -24,6 +24,8 @@ export type ScavengeConfig = {
   intervalHours: number
   autoUnlock: boolean
   troops: Record<UnitId, TroopRule>
+  /** vazio = comportamento antigo (só a aldeia da aba aberta); não-vazio = roda só nessas aldeias */
+  villageIds: number[]
   /** true assim que o usuário salvar a configuração pela primeira vez — controla se dá pra ativar o toggle */
   configured: boolean
 }
@@ -38,6 +40,7 @@ export const DEFAULT_SCAVENGE_CONFIG: ScavengeConfig = {
     light: { enabled: false, reserve: 0 },
     heavy: { enabled: false, reserve: 0 },
   },
+  villageIds: [],
   configured: false,
 }
 

@@ -114,6 +114,99 @@
   object-fit: contain;
 }
 
+.sectionHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px 0 6px;
+}
+
+.sectionHeaderRow .sectionTitle {
+  margin: 0;
+}
+
+.refreshButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #5f8f7f;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.refreshButton:hover:not(:disabled) {
+  color: #00ffc8;
+}
+
+.refreshButton:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 0.6s linear infinite;
+}
+
+.searchInput {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 10px;
+  padding: 6px 10px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background: #050505;
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 13.5px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.searchInput:focus {
+  border-color: #00ffc8;
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+  outline: none;
+}
+
+.villageList {
+  max-height: 260px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 200, 0.45) rgba(0, 255, 200, 0.06);
+}
+
+.villageList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.villageList::-webkit-scrollbar-track {
+  background: rgba(0, 255, 200, 0.06);
+  border-radius: 4px;
+}
+
+.villageList::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 200, 0.45);
+  border: 1px solid rgba(0, 255, 200, 0.15);
+  border-radius: 4px;
+}
+
+.villageList::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 200, 0.7);
+}
+
 .saveButton {
   width: 100%;
   margin-top: 18px;
