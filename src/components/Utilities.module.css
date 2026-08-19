@@ -1,0 +1,21 @@
+.back {
+  padding: 2px 0;
+  margin-bottom: 16px;
+  border: none;
+  background: transparent;
+  color: #00ffc8;
+  font-family: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: #baffe8;
+}
+
+.title {
+  margin: 0 0 18px;
+  color: #baffe8;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}

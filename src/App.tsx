@@ -8,6 +8,7 @@ import { Menu, type MenuItem } from './components/Menu'
 import { Modal } from './components/Modal'
 import { Report } from './components/Report'
 import { Settings } from './components/Settings'
+import { Utilities } from './components/Utilities'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { useMountNode } from './hooks/useMountNode'
 import { useShortcutConfig } from './hooks/useShortcutConfig'
@@ -17,7 +18,7 @@ import { loadScavengeConfig } from './lib/scavengeConfig'
 import { startAutoScavengeLoops } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
 
-type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations'
+type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations' | 'utilities'
 
 export function App() {
   const launcherMount = useMountNode('#questlog_new', 'start')
@@ -62,7 +63,7 @@ export function App() {
 
   const menuItems: MenuItem[] = [
     { label: 'Automações', onSelect: () => setScreen('automations') },
-    { label: 'Utilitários', onSelect: () => console.log('[awesometw] abrir Utilitários') },
+    { label: 'Utilitários', onSelect: () => setScreen('utilities') },
     { label: 'Configurações', onSelect: () => setScreen('settings') },
     { label: 'Pague um café', onSelect: () => setScreen('coffee') },
     { label: 'Saiba mais', onSelect: () => setScreen('report') },
@@ -86,6 +87,7 @@ export function App() {
         )}
         {screen === 'coffee' && <Coffee onBack={() => setScreen('menu')} />}
         {screen === 'report' && <Report onBack={() => setScreen('menu')} />}
+        {screen === 'utilities' && <Utilities onBack={() => setScreen('menu')} />}
         {screen === 'automations' && (
           <Automations
             autoScavengeEnabled={autoScavengeEnabled}
