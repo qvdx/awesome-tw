@@ -65,7 +65,7 @@ export function App() {
     { label: 'Utilitários', onSelect: () => console.log('[awesometw] abrir Utilitários') },
     { label: 'Configurações', onSelect: () => setScreen('settings') },
     { label: 'Pague um café', onSelect: () => setScreen('coffee') },
-    { label: 'Reportar um problema', onSelect: () => setScreen('report') },
+    { label: 'Saiba mais', onSelect: () => setScreen('report') },
   ]
 
   return (
