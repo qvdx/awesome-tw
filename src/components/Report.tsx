@@ -7,6 +7,8 @@ const REDDIT_URL = 'https://www.reddit.com/user/qvdx'
 const REDDIT_HANDLE = 'u/qvdx'
 const GITHUB_URL = 'https://github.com/qvdx'
 const GITHUB_HANDLE = 'qvdx'
+const REPO_URL = 'https://github.com/qvdx/awesome-tw'
+const REPO_HANDLE = 'qvdx/awesome-tw'
 
 function GitHubIcon() {
   return (
@@ -56,7 +58,22 @@ export function Report({ onBack }: ReportProps) {
         ‹ voltar
       </button>
 
-      <h3 className={styles.title}>REPORTAR UM PROBLEMA</h3>
+      <h3 className={styles.title}>SAIBA MAIS</h3>
+
+      <h4 className={styles.sectionTitle}>SOBRE O PROJETO</h4>
+      <p className={styles.subtitle}>Esse projeto é gratuito, open source e licenciado sob a licença MIT.</p>
+
+      <div className={styles.row}>
+        <span className={styles.labelGroup}>
+          <GitHubIcon />
+          <span className={styles.label}>Repositório</span>
+        </span>
+        <a className={styles.link} href={REPO_URL} target="_blank" rel="noopener noreferrer">
+          {REPO_HANDLE}
+        </a>
+      </div>
+
+      <h4 className={styles.sectionTitle}>REPORTAR UM PROBLEMA</h4>
       <p className={styles.subtitle}>Achou um bug ou tem uma sugestão? Me chama por aqui:</p>
 
       <div className={styles.row}>

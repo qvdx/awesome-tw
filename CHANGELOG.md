@@ -7,6 +7,12 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.5] - 2026-08-19
+
+### Alterado
+
+- Menu "Reportar um problema" virou "Saiba mais": ganhou uma seção "Sobre o projeto" com link do repositório no GitHub e aviso de que o script é gratuito, open source e licenciado sob MIT, mantendo a seção de reporte de bug/sugestão que já existia.
+
 ## [0.1.0-alpha.4] - 2026-08-19
 
 ### Adicionado
@@ -36,7 +42,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.4...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.5...HEAD
+[0.1.0-alpha.5]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.4...v0.1.0-alpha.5
 [0.1.0-alpha.4]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.3...v0.1.0-alpha.4
 [0.1.0-alpha.3]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.2...v0.1.0-alpha.3
 [0.1.0-alpha.2]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.1...v0.1.0-alpha.2
