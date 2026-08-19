@@ -13,7 +13,8 @@ import { useMountNode } from './hooks/useMountNode'
 import { useShortcutConfig } from './hooks/useShortcutConfig'
 import { countActiveFeatures, featureStorageKey } from './lib/features'
 import { getPlayerName, getVillageId } from './lib/gameData'
-import { startAutoScavengeLoop } from './lib/scavengeScheduler'
+import { loadScavengeConfig } from './lib/scavengeConfig'
+import { startAutoScavengeLoops } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
 
 type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations'
@@ -42,13 +43,16 @@ export function App() {
   useEffect(() => {
     if (!autoScavengeEnabled) return
 
-    const villageId = getVillageId()
-    if (villageId === null) {
-      console.error('[awesometw] não achei o ID da aldeia atual, coleta automática não vai rodar aqui')
+    const config = loadScavengeConfig()
+    const villageIds =
+      config.villageIds.length > 0 ? config.villageIds : [getVillageId()].filter((id): id is number => id !== null)
+
+    if (villageIds.length === 0) {
+      console.error('[awesometw] não achei nenhuma aldeia pra rodar a coleta automática')
       return
     }
 
-    return startAutoScavengeLoop(villageId)
+    return startAutoScavengeLoops(villageIds)
   }, [autoScavengeEnabled])
 
   function handleClose() {
