@@ -91,8 +91,9 @@ export function computeAvailableUnitPool(
 /**
  * Distribui as tropas disponíveis entre os níveis de coleta desbloqueados pra
  * que todos terminem por volta do mesmo horário. Níveis com loot_factor maior
- * (Grande/Extrema Coleta) recebem mais capacidade de carga, já que naturalmente
- * demoram mais por unidade de carga que os níveis menores.
+ * (Grande/Extrema Coleta) demoram muito mais por unidade de carga que os
+ * menores — pra ainda assim baterem o mesmo horário de chegada, acabam
+ * recebendo MENOS capacidade de carga (menos tropa), não mais.
  */
 export function planScavengeSquads(
   unlockedLevels: ScavengeLevelConfig[],

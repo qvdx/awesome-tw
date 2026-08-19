@@ -22,7 +22,7 @@ function saveCachedVillages(villages: Village[]): void {
   localStorage.setItem(VILLAGES_CACHE_KEY, JSON.stringify(villages))
 }
 
-function parseVillages(html: string): Village[] {
+export function parseVillages(html: string): Village[] {
   const doc = new DOMParser().parseFromString(html, 'text/html')
   const villages: Village[] = []
 

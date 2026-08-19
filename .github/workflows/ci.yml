@@ -1,0 +1,49 @@
+name: CI
+
+# Roda em toda PR pra main: checagem de tipo, build e testes unitários.
+# Serve de gate — configurado como status check obrigatório na proteção de
+# branch da main, então PR com isso vermelho não pode ser mergeada.
+on:
+  pull_request:
+    branches: [main]
+
+# cancela a run anterior se a PR ganhar um push novo antes da run velha terminar
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instala dependências
+        run: npm ci
+
+      - name: Checagem de tipo
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npx vite build
+
+      - name: Testes unitários (com cobertura)
+        run: npm run test:coverage
+
+      - name: Publica relatório de cobertura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 14
