@@ -4,6 +4,8 @@ type GameData = {
   }
   village?: {
     id?: number
+    x?: number
+    y?: number
   }
   units?: string[]
 }
@@ -31,4 +33,10 @@ export function getUnitIds(): string[] {
 
 export function getVillageId(): number | null {
   return unsafeWindow.game_data?.village?.id ?? null
+}
+
+export function getVillageCoord(): { x: number; y: number } | null {
+  const village = unsafeWindow.game_data?.village
+  if (village?.x === undefined || village?.y === undefined) return null
+  return { x: village.x, y: village.y }
 }
