@@ -1,4 +1,4 @@
-import { RefreshCw } from 'lucide-react'
+import { Filter, RefreshCw } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import styles from './VillageMapping.module.css'
 import { Checkbox } from './Checkbox'
@@ -49,6 +49,9 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
   const [error, setError] = useState<string | null>(null)
   const [typeFilter, setTypeFilter] = useState<TypeFilter>('all')
   const [maxDistance, setMaxDistance] = useState<number | null>(null)
+  const [minPoints, setMinPoints] = useState<number | null>(null)
+  const [maxPoints, setMaxPoints] = useState<number | null>(null)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
   const [unitSpeeds, setUnitSpeeds] = useState<UnitSpeeds | null>(null)
 
@@ -104,7 +107,9 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
   const filteredVillages = (villages ?? []).filter((village) => {
     const matchesType = typeFilter === 'all' || village.type === typeFilter
     const matchesDistance = maxDistance === null || village.distance <= maxDistance
-    return matchesType && matchesDistance
+    const matchesMinPoints = minPoints === null || village.points >= minPoints
+    const matchesMaxPoints = maxPoints === null || village.points <= maxPoints
+    return matchesType && matchesDistance && matchesMinPoints && matchesMaxPoints
   })
   const allFilteredSelected = filteredVillages.length > 0 && filteredVillages.every((v) => selectedIds.has(v.id))
 
@@ -152,41 +157,77 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
               {fetchedAt ? formatRelativeTime(fetchedAt) : ''} · {filteredVillages.length} de {villages.length}{' '}
               aldeias
             </span>
-            <button
-              type="button"
-              className={styles.refreshButton}
-              onClick={() => runMapping(true)}
-              disabled={loading}
-              aria-label="Atualizar mapeamento"
-            >
-              <RefreshCw size={14} strokeWidth={2.5} className={loading ? styles.spinning : undefined} />
-            </button>
+            <div className={styles.headerActions}>
+              <button
+                type="button"
+                className={`${styles.refreshButton} ${filtersOpen ? styles.refreshButtonActive : ''}`}
+                onClick={() => setFiltersOpen((open) => !open)}
+                aria-expanded={filtersOpen}
+                aria-label="Mostrar/ocultar filtros"
+              >
+                <Filter size={14} strokeWidth={2.5} />
+              </button>
+              <button
+                type="button"
+                className={styles.refreshButton}
+                onClick={() => runMapping(true)}
+                disabled={loading}
+                aria-label="Atualizar mapeamento"
+              >
+                <RefreshCw size={14} strokeWidth={2.5} className={loading ? styles.spinning : undefined} />
+              </button>
+            </div>
           </div>
 
-          <div className={styles.filtersRow}>
-            <select
-              className={styles.distanceSelect}
-              value={typeFilter}
-              onChange={(event) => setTypeFilter(event.target.value as TypeFilter)}
-            >
-              {TYPE_FILTERS.map((filter) => (
-                <option key={filter.value} value={filter.value}>
-                  {filter.label}
-                </option>
-              ))}
-            </select>
-            <select
-              className={styles.distanceSelect}
-              value={maxDistance ?? ''}
-              onChange={(event) => setMaxDistance(event.target.value === '' ? null : Number(event.target.value))}
-            >
-              {DISTANCE_FILTERS.map((filter) => (
-                <option key={filter.label} value={filter.maxDistance ?? ''}>
-                  {filter.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          {filtersOpen && (
+            <>
+              <div className={styles.filtersRow}>
+                <select
+                  className={styles.distanceSelect}
+                  value={typeFilter}
+                  onChange={(event) => setTypeFilter(event.target.value as TypeFilter)}
+                >
+                  {TYPE_FILTERS.map((filter) => (
+                    <option key={filter.value} value={filter.value}>
+                      {filter.label}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  className={styles.distanceSelect}
+                  value={maxDistance ?? ''}
+                  onChange={(event) => setMaxDistance(event.target.value === '' ? null : Number(event.target.value))}
+                >
+                  {DISTANCE_FILTERS.map((filter) => (
+                    <option key={filter.label} value={filter.maxDistance ?? ''}>
+                      {filter.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={styles.filtersRow}>
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  className={styles.pointsInput}
+                  placeholder="Pontos mín."
+                  value={minPoints ?? ''}
+                  onChange={(event) => setMinPoints(event.target.value === '' ? null : Number(event.target.value))}
+                />
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={0}
+                  className={styles.pointsInput}
+                  placeholder="Pontos máx."
+                  value={maxPoints ?? ''}
+                  onChange={(event) => setMaxPoints(event.target.value === '' ? null : Number(event.target.value))}
+                />
+              </div>
+            </>
+          )}
 
           <div className={styles.villageRow}>
             <div className={styles.villageInfo}>

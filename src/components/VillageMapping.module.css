@@ -100,6 +100,12 @@
   margin-top: 4px;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .refreshButton {
   display: inline-flex;
   align-items: center;
@@ -119,6 +125,10 @@
 .refreshButton:disabled {
   cursor: default;
   opacity: 0.6;
+}
+
+.refreshButtonActive {
+  color: #00ffc8;
 }
 
 @keyframes spin {
@@ -143,6 +153,35 @@
 .distanceSelect {
   flex: 1;
   box-sizing: border-box;
+  padding: 6px 28px 6px 8px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background-color: #050505;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235f8f7f' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 13.5px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.distanceSelect:focus {
+  border-color: #00ffc8;
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+  outline: none;
+}
+
+.pointsInput {
+  flex: 1;
+  box-sizing: border-box;
+  min-width: 0;
   padding: 6px 8px;
   border: 1px solid rgba(0, 255, 200, 0.4);
   border-radius: 3px;
@@ -155,7 +194,11 @@
     box-shadow 0.15s;
 }
 
-.distanceSelect:focus {
+.pointsInput::placeholder {
+  color: #5f8f7f;
+}
+
+.pointsInput:focus {
   border-color: #00ffc8;
   box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
   outline: none;
