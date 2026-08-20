@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react'
 import styles from './Utilities.module.css'
 import { Menu, type MenuItem } from './Menu'
+import { ScreenModifiers } from './ScreenModifiers'
 import { VillageMapping } from './VillageMapping'
 
 type UtilitiesProps = {
   onBack: () => void
+  trainingQueueOverlayEnabled: boolean
+  onChangeTrainingQueueOverlayEnabled: (enabled: boolean) => void
 }
 
-type UtilitiesScreen = 'menu' | 'mapping'
+type UtilitiesScreen = 'menu' | 'mapping' | 'modifiers'
 
-export function Utilities({ onBack }: UtilitiesProps) {
+export function Utilities({
+  onBack,
+  trainingQueueOverlayEnabled,
+  onChangeTrainingQueueOverlayEnabled,
+}: UtilitiesProps) {
   const [screen, setScreen] = useState<UtilitiesScreen>('menu')
 
   useEffect(() => {
@@ -32,7 +39,20 @@ export function Utilities({ onBack }: UtilitiesProps) {
     return <VillageMapping onBack={() => setScreen('menu')} />
   }
 
-  const items: MenuItem[] = [{ label: 'Mapeamento de aldeias', onSelect: () => setScreen('mapping') }]
+  if (screen === 'modifiers') {
+    return (
+      <ScreenModifiers
+        trainingQueueOverlayEnabled={trainingQueueOverlayEnabled}
+        onChangeTrainingQueueOverlayEnabled={onChangeTrainingQueueOverlayEnabled}
+        onBack={() => setScreen('menu')}
+      />
+    )
+  }
+
+  const items: MenuItem[] = [
+    { label: 'Mapeamento de aldeias', onSelect: () => setScreen('mapping') },
+    { label: 'Modificadores de tela', onSelect: () => setScreen('modifiers') },
+  ]
 
   return (
     <div>

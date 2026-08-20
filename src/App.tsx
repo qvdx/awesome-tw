@@ -17,6 +17,7 @@ import { getPlayerName, getVillageId } from './lib/gameData'
 import { loadScavengeConfig } from './lib/scavengeConfig'
 import { startAutoScavengeLoops } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
+import { initTrainingQueueOverlay } from './lib/trainingQueueOverlay'
 
 type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations' | 'utilities'
 
@@ -26,6 +27,10 @@ export function App() {
   const [screen, setScreen] = useState<Screen>('menu')
   const [shortcut, setShortcut] = useShortcutConfig()
   const [autoScavengeEnabled, setAutoScavengeEnabled] = useLocalStorage(featureStorageKey('auto-scavenge'), false)
+  const [trainingQueueOverlayEnabled, setTrainingQueueOverlayEnabled] = useLocalStorage(
+    featureStorageKey('overview-training-queue'),
+    false,
+  )
 
   useEffect(() => {
     function handleShortcut(event: KeyboardEvent) {
@@ -55,6 +60,11 @@ export function App() {
 
     return startAutoScavengeLoops(villageIds)
   }, [autoScavengeEnabled])
+
+  useEffect(() => {
+    if (!trainingQueueOverlayEnabled) return
+    return initTrainingQueueOverlay()
+  }, [trainingQueueOverlayEnabled])
 
   function handleClose() {
     setIsOpen(false)
@@ -87,7 +97,13 @@ export function App() {
         )}
         {screen === 'coffee' && <Coffee onBack={() => setScreen('menu')} />}
         {screen === 'report' && <Report onBack={() => setScreen('menu')} />}
-        {screen === 'utilities' && <Utilities onBack={() => setScreen('menu')} />}
+        {screen === 'utilities' && (
+          <Utilities
+            trainingQueueOverlayEnabled={trainingQueueOverlayEnabled}
+            onChangeTrainingQueueOverlayEnabled={setTrainingQueueOverlayEnabled}
+            onBack={() => setScreen('menu')}
+          />
+        )}
         {screen === 'automations' && (
           <Automations
             autoScavengeEnabled={autoScavengeEnabled}
