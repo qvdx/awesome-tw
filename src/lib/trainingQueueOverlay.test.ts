@@ -136,6 +136,18 @@ describe('injectQueueRows', () => {
     expect(totalCells[1].textContent).toBe('total')
   })
 
+  it('anota "(+xxx)" na célula correspondente da linha "total", só pras unidades com algo em produção', () => {
+    const table = document.querySelector('#units_table') as HTMLTableElement
+    injectQueueRows(table, ['spear', 'axe', 'light'], { 85096: { axe: 333 } })
+
+    const firstTbody = table.querySelector('tbody') as HTMLTableSectionElement
+    const totalRow = [...firstTbody.querySelectorAll('tr')].find((row) => row.textContent?.includes('total'))
+    const totalCells = [...(totalRow?.querySelectorAll('td.unit-item') ?? [])]
+
+    expect(totalCells[0].textContent).toBe('1696') // spear, sem fila — sem anotação
+    expect(totalCells[1].textContent).toBe('1627 (+333)') // axe, com fila
+  })
+
   it('não duplica a linha se já tiver sido injetada', () => {
     const table = document.querySelector('#units_table') as HTMLTableElement
     injectQueueRows(table, ['spear', 'axe', 'light'], { 85096: { axe: 333 } })

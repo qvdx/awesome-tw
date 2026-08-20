@@ -7,6 +7,7 @@ import { waitForElement } from "./waitForElement";
 
 const QUEUE_ROW_MARKER = "data-awesometw-queue-row";
 const TOTAL_FILLER_MARKER = "data-awesometw-total-filler";
+const TOTAL_ANNOTATION_MARKER = "data-awesometw-total-annotation";
 
 export function isUnitsOverviewScreen(): boolean {
   const params = new URLSearchParams(window.location.search);
@@ -84,6 +85,27 @@ function findTotalRow(
   );
 }
 
+/** Acrescenta "(+xxx)" em verde na célula correspondente da linha "total", pras unidades com algo em produção. */
+function annotateTotalRow(
+  totalRow: HTMLTableRowElement,
+  unitIds: string[],
+  queue: Record<string, number>,
+): void {
+  const cells = [...totalRow.querySelectorAll("td.unit-item")];
+
+  unitIds.forEach((unitId, index) => {
+    const quantity = queue[unitId] ?? 0;
+    const cell = cells[index];
+    if (quantity === 0 || !cell) return;
+
+    const annotation = document.createElement("span");
+    annotation.className = styles.totalAnnotation;
+    annotation.setAttribute(TOTAL_ANNOTATION_MARKER, "true");
+    annotation.textContent = ` (+${quantity})`;
+    cell.append(annotation);
+  });
+}
+
 export function injectQueueRows(
   table: HTMLTableElement,
   unitIds: string[],
@@ -95,8 +117,9 @@ export function injectQueueRows(
     const villageId = getVillageId(tbody);
     if (villageId === null) return;
 
+    const queue = queueByVillage[villageId] ?? {};
     const totalRow = findTotalRow(tbody);
-    const row = buildQueueRow(unitIds, queueByVillage[villageId] ?? {});
+    const row = buildQueueRow(unitIds, queue);
     tbody.insertBefore(row, totalRow);
 
     // a linha "total" era a última coberta pelo rowspan da coluna "Aldeia" —
@@ -107,13 +130,16 @@ export function injectQueueRows(
       const filler = document.createElement("td");
       filler.setAttribute(TOTAL_FILLER_MARKER, "true");
       totalRow.prepend(filler);
+      annotateTotalRow(totalRow, unitIds, queue);
     }
   });
 }
 
 function removeQueueRows(table: HTMLTableElement): void {
   table
-    .querySelectorAll(`[${QUEUE_ROW_MARKER}], [${TOTAL_FILLER_MARKER}]`)
+    .querySelectorAll(
+      `[${QUEUE_ROW_MARKER}], [${TOTAL_FILLER_MARKER}], [${TOTAL_ANNOTATION_MARKER}]`,
+    )
     .forEach((row) => row.remove());
 }
 
