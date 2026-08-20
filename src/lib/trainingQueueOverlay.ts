@@ -202,6 +202,7 @@ export function initTrainingQueueOverlay(): () => void {
   waitForElement("#units_table").then(async (element) => {
     if (cancelled) return;
     const table = element as HTMLTableElement;
+    table.classList.add(styles.centerNumbers);
 
     const unitIds = getColumnUnitIds(table);
 

@@ -101,3 +101,10 @@
   font-weight: normal;
 }
 
+/* :global aqui pra alcançar a classe nativa .unit-item (fora do CSS module) —
+   escopado embaixo de .centerNumbers, que só é aplicada na #units_table
+   quando o modificador está ligado, então não vaza pra outras telas do jogo */
+.centerNumbers :global(.unit-item) {
+  text-align: center;
+}
+
