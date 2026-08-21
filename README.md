@@ -34,7 +34,7 @@ Em breve.
 
 ### Telemetria (opcional)
 
-Em **Configurações**, tem um toggle opt-in — **desligado por padrão** — que, se ligado, reporta tempo de ciclo e erros do autofarm/coleta automática, marcados só com um ID aleatório gerado no seu navegador. Isso ajuda a pegar quebras causadas por mudanças no jogo antes de alguém precisar reportar. Nunca é enviado nome de jogador, aldeia ou mundo. Pode ser desligado a qualquer momento na mesma tela.
+Em **Configurações**, tem um toggle opt-in — **desligado por padrão** — que, se ligado, reporta tempo de ciclo e erros do autofarm/coleta automática, e quais automações estão ativas (e por quanto tempo), tudo marcado só com um ID aleatório gerado no seu navegador. Isso ajuda a pegar quebras causadas por mudanças no jogo antes de alguém precisar reportar, e a entender como as automações estão sendo usadas. Nunca é enviado nome de jogador, aldeia ou mundo. Pode ser desligado a qualquer momento na mesma tela.
 
 ## Suporte
 

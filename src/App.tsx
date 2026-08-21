@@ -9,13 +9,13 @@ import { Modal } from './components/Modal'
 import { Report } from './components/Report'
 import { Settings } from './components/Settings'
 import { Utilities } from './components/Utilities'
-import { useLocalStorage } from './hooks/useLocalStorage'
+import { useFeatureToggle } from './hooks/useFeatureToggle'
 import { useMountNode } from './hooks/useMountNode'
 import { useShortcutConfig } from './hooks/useShortcutConfig'
 import { loadAutoFarmConfig } from './lib/autoFarmConfig'
 import { showAutoFarmBanner } from './lib/autoFarmBanner'
 import { resetAutoFarmSchedule, startAutoFarmLoop } from './lib/autoFarmScheduler'
-import { countActiveFeatures, featureStorageKey } from './lib/features'
+import { countActiveFeatures } from './lib/features'
 import { getPlayerName, getVillageId } from './lib/gameData'
 import { initIncomingFarmingResources } from './lib/incomingFarmingResources'
 import { loadScavengeConfig } from './lib/scavengeConfig'
@@ -30,8 +30,8 @@ export function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [screen, setScreen] = useState<Screen>('menu')
   const [shortcut, setShortcut] = useShortcutConfig()
-  const [autoScavengeEnabled, setAutoScavengeEnabled] = useLocalStorage(featureStorageKey('auto-scavenge'), false)
-  const [autoFarmEnabled, setAutoFarmEnabled] = useLocalStorage(featureStorageKey('auto-farm'), false)
+  const [autoScavengeEnabled, setAutoScavengeEnabled] = useFeatureToggle('auto-scavenge', false)
+  const [autoFarmEnabled, setAutoFarmEnabled] = useFeatureToggle('auto-farm', false)
 
   // religar manualmente é um sinal claro de "quero rodar do zero" — limpa o
   // agendamento salvo antes de ligar, pra não esperar a execução que já
@@ -40,12 +40,9 @@ export function App() {
     if (enabled) resetAutoFarmSchedule()
     setAutoFarmEnabled(enabled)
   }
-  const [trainingQueueOverlayEnabled, setTrainingQueueOverlayEnabled] = useLocalStorage(
-    featureStorageKey('overview-training-queue'),
-    false,
-  )
-  const [incomingFarmingResourcesEnabled, setIncomingFarmingResourcesEnabled] = useLocalStorage(
-    featureStorageKey('overview-incoming-farming-resources'),
+  const [trainingQueueOverlayEnabled, setTrainingQueueOverlayEnabled] = useFeatureToggle('overview-training-queue', false)
+  const [incomingFarmingResourcesEnabled, setIncomingFarmingResourcesEnabled] = useFeatureToggle(
+    'overview-incoming-farming-resources',
     false,
   )
 
