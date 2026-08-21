@@ -153,8 +153,10 @@ export function reportCycle(params: {
   success: boolean
   itemsTotal?: number
   itemsFailed?: number
+  /** ex: aldeias cujo assistente de saque não pôde ser buscado nesse ciclo (autofarm) */
+  villagesFailed?: number
 }): void {
-  const { feature, durationMs, success, itemsTotal, itemsFailed } = params
+  const { feature, durationMs, success, itemsTotal, itemsFailed, villagesFailed } = params
   if (!isTelemetryEnabled()) return
   if (!shouldReportCycle(feature, success)) return
 
@@ -162,6 +164,6 @@ export function reportCycle(params: {
     level: success ? 'info' : 'warning',
     message: `[${feature}] ciclo ${success ? 'concluído' : 'falhou'}`,
     tags: { feature, success: String(success) },
-    extra: { durationMs, itemsTotal, itemsFailed },
+    extra: { durationMs, itemsTotal, itemsFailed, villagesFailed },
   })
 }
