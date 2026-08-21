@@ -1,0 +1,96 @@
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 4px 0 10px;
+  padding: 4px 10px;
+  border: 1px solid #7d510f;
+  border-radius: 3px;
+  background: #f4e4bc;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 11px;
+}
+
+.label {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #603000;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.statusDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.statusDotChecking {
+  background: #e0a728;
+  animation: awesometw-auto-farm-blink 1.6s ease-in-out infinite;
+}
+
+.statusDotSending {
+  background: #3ecf5e;
+  animation: awesometw-auto-farm-blink 1.6s ease-in-out infinite;
+}
+
+.statusDotIdle {
+  background: #3a8bd4;
+}
+
+@keyframes awesometw-auto-farm-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.status {
+  flex: 1;
+  color: #603000;
+}
+
+.track {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(125, 81, 15, 0.15);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #7d510f;
+  transition: width 0.2s ease-out;
+}
+
+.spinner {
+  display: none;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(125, 81, 15, 0.3);
+  border-top-color: #7d510f;
+  border-radius: 50%;
+  animation: awesometw-auto-farm-spin 0.6s linear infinite;
+}
+
+.spinner.visible {
+  display: inline-block;
+}
+
+@keyframes awesometw-auto-farm-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
