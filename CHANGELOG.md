@@ -11,6 +11,7 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ### Adicionado
 
+- **Automações › Autofarm**: nova automação que cicla pelas aldeias configuradas, lê o assistente de saque (`am_farm`) de cada uma e decide sozinho o que enviar — prioriza o modelo C (calculado a partir do relatório) sobre o A quando o relatório permite, ordena os alvos por eficiência de saque (recurso previsto ÷ distância) em vez de distância pura, e coordena entre aldeias pra que um mesmo alvo não seja reivindicado duas vezes no mesmo ciclo. Limites configuráveis de muralha máxima e distância, mais intervalo aleatório entre envios (evita bloqueio antiflood do jogo). Barra de status fixa abaixo do cabeçalho do jogo, com contagem regressiva persistente entre navegações de página (o jogo não é SPA).
 - **Configurações › Telemetria**: toggle opt-in (desligado por padrão) que reporta tempo de ciclo e erros do autofarm/coleta automática, marcados só com um ID anônimo gerado localmente — nunca aldeia, jogador ou mundo. Eventos só são enviados em mudança de estado (ciclo passou a falhar ou voltou a funcionar) ou heartbeat diário, pra manter o volume mínimo.
 
 ## [0.1.0-alpha.7] - 2026-08-21
