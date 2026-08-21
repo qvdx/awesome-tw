@@ -7,6 +7,14 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.9] - 2026-08-21
+
+### Corrigido
+
+- **Telemetria**: declarado `@connect sentry.io` no metadata do userscript — sem isso, o Tampermonkey interrompia a execução do script pedindo confirmação em runtime na primeira chamada de `GM_xmlhttpRequest` pra um host desconhecido.
+- **Telemetria**: falha ao enviar um evento (rede ou rejeição do Sentry) agora fica registrada no console, em vez de silenciosamente ignorada.
+- **Telemetria**: o número de aldeias que falharam ao buscar o assistente de saque (`villagesFailed`) estava sendo calculado mas descartado antes de chegar no evento de ciclo do autofarm — um ciclo com falha generalizada na busca podia aparecer como "concluído, 0 itens".
+
 ## [0.1.0-alpha.8] - 2026-08-21
 
 ### Adicionado
@@ -62,7 +70,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.8...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.9...HEAD
+[0.1.0-alpha.9]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.8...v0.1.0-alpha.9
 [0.1.0-alpha.8]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.7...v0.1.0-alpha.8
 [0.1.0-alpha.7]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.6...v0.1.0-alpha.7
 [0.1.0-alpha.6]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.5...v0.1.0-alpha.6

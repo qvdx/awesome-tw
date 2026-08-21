@@ -91,6 +91,7 @@ export function startAutoFarmLoop(villageIds: number[], callbacks?: AutoFarmSche
         success: true,
         itemsTotal: stats.actionsSent + stats.actionsFailed,
         itemsFailed: stats.actionsFailed,
+        villagesFailed: stats.villagesFailed,
       })
     } catch (error) {
       console.error('[awesometw] falha no ciclo de autofarm, tentando de novo no próximo ciclo', error)
