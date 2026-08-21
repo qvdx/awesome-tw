@@ -1,7 +1,8 @@
 import { loadAutoFarmConfig } from './autoFarmConfig'
+import { trackCycle } from './analytics'
 import { cacheKey } from './features'
 import { runAutoFarmOnce, type AutoFarmProgress } from './runAutoFarmOnce'
-import { reportCycle, reportError } from './telemetry'
+import { reportError } from './telemetry'
 
 const MIN_INTERVAL_MS = 60_000
 const NEXT_RUN_KEY = cacheKey('auto-farm-next-run-at')
@@ -85,7 +86,7 @@ export function startAutoFarmLoop(villageIds: number[], callbacks?: AutoFarmSche
         },
         callbacks?.onProgress,
       )
-      reportCycle({
+      trackCycle({
         feature: 'autofarm',
         durationMs: performance.now() - startedAt,
         success: true,
@@ -96,7 +97,7 @@ export function startAutoFarmLoop(villageIds: number[], callbacks?: AutoFarmSche
     } catch (error) {
       console.error('[awesometw] falha no ciclo de autofarm, tentando de novo no próximo ciclo', error)
       reportError({ feature: 'autofarm', phase: 'cycle', error })
-      reportCycle({ feature: 'autofarm', durationMs: performance.now() - startedAt, success: false })
+      trackCycle({ feature: 'autofarm', durationMs: performance.now() - startedAt, success: false })
     }
 
     if (!stopped) {
