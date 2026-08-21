@@ -111,9 +111,10 @@ export function Settings({
       </div>
 
       <p className={styles.hint}>
-        Desligado por padrão. Se ligado, manda só tempo de ciclo e erros do
-        autofarm/coleta, marcados com um ID aleatório — nunca aldeia,
-        jogador ou mundo.
+        Desligado por padrão. Se ligado, manda tempo de ciclo e erros do
+        autofarm/coleta, e quais automações estão ativas (e por quanto
+        tempo) — tudo marcado com um ID aleatório, nunca aldeia, jogador
+        ou mundo.
       </p>
     </div>
   );

@@ -16,7 +16,9 @@ export default defineConfig({
     __SENTRY_DSN__: JSON.stringify(process.env.SENTRY_DSN ?? ''),
     // Mesma lógica do Sentry: chave vazia em builds locais/dev = analytics sempre desligado.
     __POSTHOG_KEY__: JSON.stringify(process.env.POSTHOG_API_KEY ?? ''),
-    __POSTHOG_HOST__: JSON.stringify(process.env.POSTHOG_HOST ?? 'https://us.i.posthog.com'),
+    // `||`, não `??`: um secret do GitHub Actions não cadastrado ainda define a env var
+    // (só que vazia), então `??` nunca cairia no fallback.
+    __POSTHOG_HOST__: JSON.stringify(process.env.POSTHOG_HOST || 'https://us.i.posthog.com'),
   },
   plugins: [
     react(),
