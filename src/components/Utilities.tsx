@@ -8,6 +8,8 @@ type UtilitiesProps = {
   onBack: () => void
   trainingQueueOverlayEnabled: boolean
   onChangeTrainingQueueOverlayEnabled: (enabled: boolean) => void
+  incomingFarmingResourcesEnabled: boolean
+  onChangeIncomingFarmingResourcesEnabled: (enabled: boolean) => void
 }
 
 type UtilitiesScreen = 'menu' | 'mapping' | 'modifiers'
@@ -16,6 +18,8 @@ export function Utilities({
   onBack,
   trainingQueueOverlayEnabled,
   onChangeTrainingQueueOverlayEnabled,
+  incomingFarmingResourcesEnabled,
+  onChangeIncomingFarmingResourcesEnabled,
 }: UtilitiesProps) {
   const [screen, setScreen] = useState<UtilitiesScreen>('menu')
 
@@ -44,6 +48,8 @@ export function Utilities({
       <ScreenModifiers
         trainingQueueOverlayEnabled={trainingQueueOverlayEnabled}
         onChangeTrainingQueueOverlayEnabled={onChangeTrainingQueueOverlayEnabled}
+        incomingFarmingResourcesEnabled={incomingFarmingResourcesEnabled}
+        onChangeIncomingFarmingResourcesEnabled={onChangeIncomingFarmingResourcesEnabled}
         onBack={() => setScreen('menu')}
       />
     )

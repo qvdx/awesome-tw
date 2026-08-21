@@ -5,12 +5,16 @@ import { Toggle } from './Toggle'
 type ScreenModifiersProps = {
   trainingQueueOverlayEnabled: boolean
   onChangeTrainingQueueOverlayEnabled: (enabled: boolean) => void
+  incomingFarmingResourcesEnabled: boolean
+  onChangeIncomingFarmingResourcesEnabled: (enabled: boolean) => void
   onBack: () => void
 }
 
 export function ScreenModifiers({
   trainingQueueOverlayEnabled,
   onChangeTrainingQueueOverlayEnabled,
+  incomingFarmingResourcesEnabled,
+  onChangeIncomingFarmingResourcesEnabled,
   onBack,
 }: ScreenModifiersProps) {
   useEffect(() => {
@@ -40,6 +44,11 @@ export function ScreenModifiers({
       <div className={styles.row}>
         <span>Visualizar tropas em produção</span>
         <Toggle checked={trainingQueueOverlayEnabled} onChange={onChangeTrainingQueueOverlayEnabled} />
+      </div>
+
+      <div className={styles.row}>
+        <span>Visualizar recursos chegando do saque</span>
+        <Toggle checked={incomingFarmingResourcesEnabled} onChange={onChangeIncomingFarmingResourcesEnabled} />
       </div>
     </div>
   )

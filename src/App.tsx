@@ -14,6 +14,7 @@ import { useMountNode } from './hooks/useMountNode'
 import { useShortcutConfig } from './hooks/useShortcutConfig'
 import { countActiveFeatures, featureStorageKey } from './lib/features'
 import { getPlayerName, getVillageId } from './lib/gameData'
+import { initIncomingFarmingResources } from './lib/incomingFarmingResources'
 import { loadScavengeConfig } from './lib/scavengeConfig'
 import { startAutoScavengeLoops } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
@@ -29,6 +30,10 @@ export function App() {
   const [autoScavengeEnabled, setAutoScavengeEnabled] = useLocalStorage(featureStorageKey('auto-scavenge'), false)
   const [trainingQueueOverlayEnabled, setTrainingQueueOverlayEnabled] = useLocalStorage(
     featureStorageKey('overview-training-queue'),
+    false,
+  )
+  const [incomingFarmingResourcesEnabled, setIncomingFarmingResourcesEnabled] = useLocalStorage(
+    featureStorageKey('overview-incoming-farming-resources'),
     false,
   )
 
@@ -66,6 +71,11 @@ export function App() {
     return initTrainingQueueOverlay()
   }, [trainingQueueOverlayEnabled])
 
+  useEffect(() => {
+    if (!incomingFarmingResourcesEnabled) return
+    return initIncomingFarmingResources()
+  }, [incomingFarmingResourcesEnabled])
+
   function handleClose() {
     setIsOpen(false)
     setScreen('menu')
@@ -101,6 +111,8 @@ export function App() {
           <Utilities
             trainingQueueOverlayEnabled={trainingQueueOverlayEnabled}
             onChangeTrainingQueueOverlayEnabled={setTrainingQueueOverlayEnabled}
+            incomingFarmingResourcesEnabled={incomingFarmingResourcesEnabled}
+            onChangeIncomingFarmingResourcesEnabled={setIncomingFarmingResourcesEnabled}
             onBack={() => setScreen('menu')}
           />
         )}
