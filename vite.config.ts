@@ -14,6 +14,9 @@ export default defineConfig({
     // nesses builds, mesmo que o usuário ligue o opt-in. Só o build oficial de release
     // (GitHub Actions, com o secret SENTRY_DSN) sai com um DSN de verdade embutido.
     __SENTRY_DSN__: JSON.stringify(process.env.SENTRY_DSN ?? ''),
+    // Mesma lógica do Sentry: chave vazia em builds locais/dev = analytics sempre desligado.
+    __POSTHOG_KEY__: JSON.stringify(process.env.POSTHOG_API_KEY ?? ''),
+    __POSTHOG_HOST__: JSON.stringify(process.env.POSTHOG_HOST ?? 'https://us.i.posthog.com'),
   },
   plugins: [
     react(),
@@ -33,12 +36,12 @@ export default defineConfig({
         // (src/lib/telemetry.ts) — roda fora do contexto da página, então ignora o CSP
         // do jogo que bloquearia um fetch() puro pro Sentry.
         grant: ['unsafeWindow', 'GM_xmlhttpRequest'],
-        // Declara o host da telemetria de antemão — sem isso, o Tampermonkey pede
-        // confirmação em runtime na primeira vez que o script chama GM_xmlhttpRequest
+        // Declara os hosts de telemetria/analytics de antemão — sem isso, o Tampermonkey
+        // pede confirmação em runtime na primeira vez que o script chama GM_xmlhttpRequest
         // pra um domínio desconhecido (pop-up no meio da execução). Um domínio aqui já
-        // cobre os subdomínios (ex: o<id>.ingest.us.sentry.io), por documentação do
-        // próprio Tampermonkey.
-        connect: ['sentry.io'],
+        // cobre os subdomínios (ex: o<id>.ingest.us.sentry.io, us.i.posthog.com), por
+        // documentação do próprio Tampermonkey.
+        connect: ['sentry.io', 'posthog.com'],
         updateURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
         downloadURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
       },
