@@ -7,6 +7,12 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.8] - 2026-08-21
+
+### Adicionado
+
+- **Configurações › Telemetria**: toggle opt-in (desligado por padrão) que reporta tempo de ciclo e erros do autofarm/coleta automática, marcados só com um ID anônimo gerado localmente — nunca aldeia, jogador ou mundo. Eventos só são enviados em mudança de estado (ciclo passou a falhar ou voltou a funcionar) ou heartbeat diário, pra manter o volume mínimo.
+
 ## [0.1.0-alpha.7] - 2026-08-21
 
 ### Adicionado
@@ -55,7 +61,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.7...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.8...HEAD
+[0.1.0-alpha.8]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.7...v0.1.0-alpha.8
 [0.1.0-alpha.7]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.6...v0.1.0-alpha.7
 [0.1.0-alpha.6]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.5...v0.1.0-alpha.6
 [0.1.0-alpha.5]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.4...v0.1.0-alpha.5
