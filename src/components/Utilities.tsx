@@ -1,43 +1,58 @@
-import { useEffect, useState } from "react";
-import styles from "./Utilities.module.css";
-import { Menu, type MenuItem } from "./Menu";
-import { VillageMapping } from "./VillageMapping";
+import { useEffect, useState } from 'react'
+import styles from './Utilities.module.css'
+import { Menu, type MenuItem } from './Menu'
+import { ScreenModifiers } from './ScreenModifiers'
+import { VillageMapping } from './VillageMapping'
 
 type UtilitiesProps = {
-  onBack: () => void;
-};
+  onBack: () => void
+  trainingQueueOverlayEnabled: boolean
+  onChangeTrainingQueueOverlayEnabled: (enabled: boolean) => void
+}
 
-type UtilitiesScreen = "menu" | "mapping";
+type UtilitiesScreen = 'menu' | 'mapping' | 'modifiers'
 
-export function Utilities({ onBack }: UtilitiesProps) {
-  const [screen, setScreen] = useState<UtilitiesScreen>("menu");
+export function Utilities({
+  onBack,
+  trainingQueueOverlayEnabled,
+  onChangeTrainingQueueOverlayEnabled,
+}: UtilitiesProps) {
+  const [screen, setScreen] = useState<UtilitiesScreen>('menu')
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       // enquanto uma tela aninhada estiver aberta, o Esc dela é quem manda
-      if (screen !== "menu") return;
+      if (screen !== 'menu') return
 
-      if (event.key === "Escape") {
-        event.preventDefault();
-        event.stopPropagation();
-        onBack();
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        event.stopPropagation()
+        onBack()
       }
     }
 
-    document.addEventListener("keydown", handleKeyDown, true);
-    return () => document.removeEventListener("keydown", handleKeyDown, true);
-  }, [onBack, screen]);
+    document.addEventListener('keydown', handleKeyDown, true)
+    return () => document.removeEventListener('keydown', handleKeyDown, true)
+  }, [onBack, screen])
 
-  if (screen === "mapping") {
-    return <VillageMapping onBack={() => setScreen("menu")} />;
+  if (screen === 'mapping') {
+    return <VillageMapping onBack={() => setScreen('menu')} />
+  }
+
+  if (screen === 'modifiers') {
+    return (
+      <ScreenModifiers
+        trainingQueueOverlayEnabled={trainingQueueOverlayEnabled}
+        onChangeTrainingQueueOverlayEnabled={onChangeTrainingQueueOverlayEnabled}
+        onBack={() => setScreen('menu')}
+      />
+    )
   }
 
   const items: MenuItem[] = [
-    {
-      label: "Mapeamento de aldeias bárbaras e bônus",
-      onSelect: () => setScreen("mapping"),
-    },
-  ];
+    { label: 'Mapeamento de aldeias bárbaras e bônus', onSelect: () => setScreen('mapping') },
+    { label: 'Modificadores de tela', onSelect: () => setScreen('modifiers') },
+  ]
 
   return (
     <div>
@@ -49,5 +64,5 @@ export function Utilities({ onBack }: UtilitiesProps) {
 
       <Menu items={items} />
     </div>
-  );
+  )
 }
