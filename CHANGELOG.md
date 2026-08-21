@@ -7,6 +7,16 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.10] - 2026-08-21
+
+### Adicionado
+
+- **Analytics de uso (opcional)**: além da telemetria de erro/performance (Sentry), o mesmo toggle de opt-in em Configurações agora também manda dados de uso pro PostHog — todo ciclo de autofarm/coleta (sem amostragem, dá média/tendência de verdade) e quando cada automação é ligada/desligada, com quanto tempo ficou ativa. Mesmas regras de privacidade de sempre: só ID anônimo local, nunca aldeia, jogador ou mundo.
+
+### Alterado
+
+- **Telemetria (Sentry)**: simplificada pra só reportar erro de verdade — o reporte de "ciclo concluído" (com heartbeat/transição de estado) saiu daqui e virou o evento de ciclo do PostHog acima, sem o throttle que existia por causa da cota do Sentry.
+
 ## [0.1.0-alpha.9] - 2026-08-21
 
 ### Corrigido
@@ -70,7 +80,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.9...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.10...HEAD
+[0.1.0-alpha.10]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.9...v0.1.0-alpha.10
 [0.1.0-alpha.9]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.8...v0.1.0-alpha.9
 [0.1.0-alpha.8]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.7...v0.1.0-alpha.8
 [0.1.0-alpha.7]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.6...v0.1.0-alpha.7
