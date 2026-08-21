@@ -1,11 +1,19 @@
-import { Filter, RefreshCw } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Eye, Filter, RefreshCw } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './VillageMapping.module.css'
 import { Checkbox } from './Checkbox'
+import { sendMassSpyAttacks, type MassSpyProgress } from '../lib/sendMassSpyAttacks'
+import { showSpySendBanner } from '../lib/spySendBanner'
 import { fetchNearbyVillages, getNearbyVillagesFetchedAt, type NearbyVillage } from '../lib/villageMap'
 import { formatTravelTime, getUnitSpeeds, type UnitSpeeds } from '../lib/worldSpeeds'
 
 const TRAVEL_UNITS = ['light', 'ram', 'catapult', 'snob'] as const
+
+// valor inicial do campo "exploradores por ataque" no diálogo — o jogador pode mudar antes de confirmar
+const DEFAULT_SPY_COUNT = 5
+// intervalo aleatório entre cada envio, pra não disparar em rajada
+const SPY_MIN_DELAY_MS = 1000
+const SPY_MAX_DELAY_MS = 3000
 
 function unitIconUrl(unitId: string): string {
   return `/graphic/unit/unit_${unitId}.png`
@@ -54,6 +62,12 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
   const [unitSpeeds, setUnitSpeeds] = useState<UnitSpeeds | null>(null)
+  const [spyDialogOpen, setSpyDialogOpen] = useState(false)
+  const [spyCountInput, setSpyCountInput] = useState(DEFAULT_SPY_COUNT)
+  const [spying, setSpying] = useState(false)
+  const [spyProgress, setSpyProgress] = useState<MassSpyProgress | null>(null)
+  const [spySummary, setSpySummary] = useState<string | null>(null)
+  const spyAbortRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     getUnitSpeeds()
@@ -113,6 +127,19 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
   })
   const allFilteredSelected = filteredVillages.length > 0 && filteredVillages.every((v) => selectedIds.has(v.id))
 
+  useEffect(() => {
+    // ao mudar o filtro, tira do conjunto qualquer aldeia que ficou de fora
+    // dele — senão a seleção "vaza" pra aldeias escondidas (bug: "selecionar
+    // todas" parecia ignorar o filtro porque a espionagem em massa lê
+    // `selectedIds` puro, sem cruzar com a lista filtrada)
+    const filteredIds = new Set(filteredVillages.map((v) => v.id))
+    setSelectedIds((current) => {
+      const next = new Set([...current].filter((id) => filteredIds.has(id)))
+      return next.size === current.size ? current : next
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- só reage a mudança de filtro, não a toda recomputação de filteredVillages
+  }, [typeFilter, maxDistance, minPoints, maxPoints])
+
   function toggleVillage(id: number, checked: boolean) {
     setSelectedIds((current) => {
       const next = new Set(current)
@@ -131,6 +158,53 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
       }
       return new Set([...current, ...filteredVillages.map((v) => v.id)])
     })
+  }
+
+  function confirmSpySelected() {
+    const targets = (villages ?? [])
+      .filter((v) => selectedIds.has(v.id))
+      .map((v) => ({ villageId: v.id, x: v.x, y: v.y }))
+    if (targets.length === 0) return
+
+    const controller = new AbortController()
+    spyAbortRef.current = controller
+
+    setSpyDialogOpen(false)
+    setSpying(true)
+    setSpySummary(null)
+    setSpyProgress({ completed: 0, total: targets.length })
+
+    const banner = showSpySendBanner(() => controller.abort())
+
+    sendMassSpyAttacks(
+      targets,
+      { spyCount: spyCountInput, minDelayMs: SPY_MIN_DELAY_MS, maxDelayMs: SPY_MAX_DELAY_MS, signal: controller.signal },
+      (progress) => {
+        setSpyProgress(progress)
+        banner.update(progress)
+      },
+    )
+      .then((results) => {
+        const successCount = results.filter((r) => r.success).length
+        const wasStopped = results.length < targets.length
+        setSpySummary(
+          wasStopped
+            ? `Espionagem interrompida: ${results.length} de ${targets.length} aldeias processadas (${successCount} com sucesso).`
+            : `Espionagem concluída: ${successCount} de ${results.length} enviados com sucesso.`,
+        )
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : 'Falha ao espiar as aldeias selecionadas.')
+      })
+      .finally(() => {
+        setSpying(false)
+        spyAbortRef.current = null
+        banner.remove()
+      })
+  }
+
+  function stopSpying() {
+    spyAbortRef.current?.abort()
   }
 
   return (
@@ -231,9 +305,73 @@ export function VillageMapping({ onBack }: VillageMappingProps) {
 
           <div className={styles.villageRow}>
             <div className={styles.villageInfo}>
-              <Checkbox checked={allFilteredSelected} onChange={toggleAllVillages} label="Selecionar todas" />
+              <Checkbox
+                checked={allFilteredSelected}
+                onChange={toggleAllVillages}
+                label={selectedIds.size > 0 ? `Selecionar todas (${selectedIds.size})` : 'Selecionar todas'}
+              />
             </div>
+            <button
+              type="button"
+              className={styles.spyButton}
+              onClick={() => setSpyDialogOpen((open) => !open)}
+              disabled={selectedIds.size === 0 || spying}
+              aria-label="Espiar aldeias selecionadas"
+              aria-expanded={spyDialogOpen}
+              title={
+                selectedIds.size === 0
+                  ? 'Espiar aldeias selecionadas (selecione ao menos uma aldeia pra usar a espionagem em massa)'
+                  : 'Espiar aldeias selecionadas'
+              }
+            >
+              <Eye size={16} strokeWidth={2.5} />
+            </button>
           </div>
+
+          {spyDialogOpen && !spying && (
+            <div className={styles.spyDialog}>
+              <label className={styles.spyDialogLabel}>
+                Exploradores por ataque
+                <input
+                  type="number"
+                  inputMode="numeric"
+                  min={1}
+                  className={styles.pointsInput}
+                  value={spyCountInput}
+                  onChange={(event) => setSpyCountInput(Math.max(1, Number(event.target.value) || 1))}
+                />
+              </label>
+              <div className={styles.spyDialogActions}>
+                <button type="button" className={styles.spyDialogCancel} onClick={() => setSpyDialogOpen(false)}>
+                  Cancelar
+                </button>
+                <button type="button" className={styles.mapButton} onClick={confirmSpySelected}>
+                  Espiar {selectedIds.size} {selectedIds.size === 1 ? 'aldeia' : 'aldeias'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {spying && spyProgress && (
+            <div className={styles.spyProgressWrap}>
+              <div className={styles.spyProgressHeader}>
+                <span className={styles.unit}>
+                  Espiando {spyProgress.completed} de {spyProgress.total}...
+                </span>
+                <button type="button" className={styles.spyStopButton} onClick={stopSpying}>
+                  Interromper
+                </button>
+              </div>
+              <div className={styles.progressTrack}>
+                <div
+                  className={styles.spyProgressFill}
+                  style={{ width: `${Math.round((spyProgress.completed / spyProgress.total) * 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
+
+          {!spying && spySummary && <p className={styles.unit}>{spySummary}</p>}
 
           <div className={styles.villageList}>
             {filteredVillages.length > 0 ? (

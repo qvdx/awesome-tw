@@ -144,6 +144,114 @@
   animation: spin 0.6s linear infinite;
 }
 
+.spyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #baffe8;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.spyButton:hover:not(:disabled) {
+  color: #00ffc8;
+}
+
+.spyButton:disabled {
+  color: #3a4a45;
+  cursor: default;
+}
+
+.spyDialog {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  border-radius: 4px;
+  background: rgba(0, 255, 200, 0.04);
+}
+
+.spyDialogLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #baffe8;
+  font-size: 13.5px;
+}
+
+.spyDialogLabel .pointsInput {
+  flex: 0 0 80px;
+}
+
+.spyDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.spyDialogCancel {
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  border-radius: 3px;
+  background: transparent;
+  color: #5f8f7f;
+  font-family: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.spyDialogCancel:hover {
+  color: #baffe8;
+  border-color: rgba(0, 255, 200, 0.5);
+}
+
+.spyDialog .mapButton {
+  width: auto;
+  margin-top: 0;
+}
+
+.spyProgressWrap {
+  margin-top: 8px;
+}
+
+.spyProgressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.spyStopButton {
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 138, 148, 0.5);
+  border-radius: 3px;
+  background: rgba(255, 138, 148, 0.1);
+  color: #ff8a94;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.spyStopButton:hover {
+  background: rgba(255, 138, 148, 0.2);
+  border-color: #ff8a94;
+}
+
+.spyProgressFill {
+  height: 100%;
+  border-radius: 2px;
+  background: #00ffc8;
+  transition: width 0.2s ease-out;
+}
+
 .filtersRow {
   display: flex;
   gap: 10px;
