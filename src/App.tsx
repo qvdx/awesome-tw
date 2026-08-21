@@ -12,8 +12,12 @@ import { Utilities } from './components/Utilities'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { useMountNode } from './hooks/useMountNode'
 import { useShortcutConfig } from './hooks/useShortcutConfig'
+import { loadAutoFarmConfig } from './lib/autoFarmConfig'
+import { showAutoFarmBanner } from './lib/autoFarmBanner'
+import { resetAutoFarmSchedule, startAutoFarmLoop } from './lib/autoFarmScheduler'
 import { countActiveFeatures, featureStorageKey } from './lib/features'
 import { getPlayerName, getVillageId } from './lib/gameData'
+import { initIncomingFarmingResources } from './lib/incomingFarmingResources'
 import { loadScavengeConfig } from './lib/scavengeConfig'
 import { startAutoScavengeLoops } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
@@ -27,8 +31,21 @@ export function App() {
   const [screen, setScreen] = useState<Screen>('menu')
   const [shortcut, setShortcut] = useShortcutConfig()
   const [autoScavengeEnabled, setAutoScavengeEnabled] = useLocalStorage(featureStorageKey('auto-scavenge'), false)
+  const [autoFarmEnabled, setAutoFarmEnabled] = useLocalStorage(featureStorageKey('auto-farm'), false)
+
+  // religar manualmente é um sinal claro de "quero rodar do zero" — limpa o
+  // agendamento salvo antes de ligar, pra não esperar a execução que já
+  // estava marcada de antes de desligar
+  function handleChangeAutoFarmEnabled(enabled: boolean) {
+    if (enabled) resetAutoFarmSchedule()
+    setAutoFarmEnabled(enabled)
+  }
   const [trainingQueueOverlayEnabled, setTrainingQueueOverlayEnabled] = useLocalStorage(
     featureStorageKey('overview-training-queue'),
+    false,
+  )
+  const [incomingFarmingResourcesEnabled, setIncomingFarmingResourcesEnabled] = useLocalStorage(
+    featureStorageKey('overview-incoming-farming-resources'),
     false,
   )
 
@@ -62,9 +79,39 @@ export function App() {
   }, [autoScavengeEnabled])
 
   useEffect(() => {
+    if (!autoFarmEnabled) return
+
+    const config = loadAutoFarmConfig()
+    const villageIds =
+      config.villageIds.length > 0 ? config.villageIds : [getVillageId()].filter((id): id is number => id !== null)
+
+    if (villageIds.length === 0) {
+      console.error('[awesometw] não achei nenhuma aldeia pra rodar o autofarm')
+      return
+    }
+
+    const banner = showAutoFarmBanner()
+    const stop = startAutoFarmLoop(villageIds, {
+      onChecking: () => banner.setChecking(),
+      onProgress: (progress) => banner.setProgress(progress.total > 0 ? progress : null),
+      onNextRunAt: (timestamp) => banner.setNextRunAt(timestamp),
+    })
+
+    return () => {
+      stop()
+      banner.remove()
+    }
+  }, [autoFarmEnabled])
+
+  useEffect(() => {
     if (!trainingQueueOverlayEnabled) return
     return initTrainingQueueOverlay()
   }, [trainingQueueOverlayEnabled])
+
+  useEffect(() => {
+    if (!incomingFarmingResourcesEnabled) return
+    return initIncomingFarmingResources()
+  }, [incomingFarmingResourcesEnabled])
 
   function handleClose() {
     setIsOpen(false)
@@ -101,6 +148,8 @@ export function App() {
           <Utilities
             trainingQueueOverlayEnabled={trainingQueueOverlayEnabled}
             onChangeTrainingQueueOverlayEnabled={setTrainingQueueOverlayEnabled}
+            incomingFarmingResourcesEnabled={incomingFarmingResourcesEnabled}
+            onChangeIncomingFarmingResourcesEnabled={setIncomingFarmingResourcesEnabled}
             onBack={() => setScreen('menu')}
           />
         )}
@@ -108,6 +157,8 @@ export function App() {
           <Automations
             autoScavengeEnabled={autoScavengeEnabled}
             onChangeAutoScavengeEnabled={setAutoScavengeEnabled}
+            autoFarmEnabled={autoFarmEnabled}
+            onChangeAutoFarmEnabled={handleChangeAutoFarmEnabled}
             onBack={() => setScreen('menu')}
           />
         )}

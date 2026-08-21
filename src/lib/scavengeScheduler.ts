@@ -1,6 +1,7 @@
 import { fetchScavengeVillageState } from './fetchScavengeLevels'
 import { loadScavengeConfig } from './scavengeConfig'
 import { runAutoScavengeOnce } from './runAutoScavengeOnce'
+import { reportCycle, reportError } from './telemetry'
 
 /** Folga depois do horário de retorno da leva mais demorada, pra dar tempo do servidor processar o "chegou". */
 const RETURN_BUFFER_MS = 60_000
@@ -25,10 +26,12 @@ export function startAutoScavengeLoop(villageId: number): () => void {
     if (stopped) return
 
     let delayMs = MIN_FALLBACK_MS
+    const startedAt = performance.now()
 
     try {
       const config = loadScavengeConfig()
-      await runAutoScavengeOnce(villageId, config)
+      const sendResult = await runAutoScavengeOnce(villageId, config)
+      const itemsFailed = sendResult.squad_responses.filter((response) => !response.success).length
 
       const state = await fetchScavengeVillageState(villageId)
       const activeReturnTimes = state.levels
@@ -41,8 +44,18 @@ export function startAutoScavengeLoop(villageId: number): () => void {
       } else {
         delayMs = Math.max(MIN_FALLBACK_MS, config.intervalHours * 60 * 60 * 1000)
       }
+
+      reportCycle({
+        feature: 'scavenge',
+        durationMs: performance.now() - startedAt,
+        success: true,
+        itemsTotal: sendResult.squad_responses.length,
+        itemsFailed,
+      })
     } catch (error) {
       console.error('[awesometw] falha no ciclo de coleta automática, tentando de novo em breve', error)
+      reportError({ feature: 'scavenge', phase: 'cycle', error })
+      reportCycle({ feature: 'scavenge', durationMs: performance.now() - startedAt, success: false })
     }
 
     if (!stopped) {

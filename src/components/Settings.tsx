@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "./Settings.module.css";
 import { formatShortcut, isMac, type ShortcutConfig } from "../lib/shortcut";
+import { isTelemetryEnabled, setTelemetryEnabled } from "../lib/telemetry";
+import { Toggle } from "./Toggle";
 
 const MODIFIER_CODES = new Set([
   "ControlLeft",
@@ -25,6 +27,14 @@ export function Settings({
   onBack,
 }: SettingsProps) {
   const [isRecording, setIsRecording] = useState(false);
+  // lido direto do localStorage (não é `useLocalStorage`: telemetry.ts guarda 'true'/'false'
+  // como string simples, não JSON, pra ficar fora do namespace de features de features.ts)
+  const [telemetryEnabled, setTelemetryEnabledState] = useState(isTelemetryEnabled);
+
+  function handleChangeTelemetryEnabled(enabled: boolean) {
+    setTelemetryEnabled(enabled);
+    setTelemetryEnabledState(enabled);
+  }
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -92,6 +102,19 @@ export function Settings({
           aqui pra outra combinação.
         </p>
       )}
+
+      <h3 className={styles.sectionTitle}>TELEMETRIA</h3>
+
+      <div className={styles.row}>
+        <span>Ajudar a melhorar o script</span>
+        <Toggle checked={telemetryEnabled} onChange={handleChangeTelemetryEnabled} />
+      </div>
+
+      <p className={styles.hint}>
+        Desligado por padrão. Se ligado, manda só tempo de ciclo e erros do
+        autofarm/coleta, marcados com um ID aleatório — nunca aldeia,
+        jogador ou mundo.
+      </p>
     </div>
   );
 }

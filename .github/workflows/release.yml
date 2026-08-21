@@ -63,6 +63,10 @@ jobs:
 
       - name: Instala e builda
         if: steps.version.outputs.should_release == 'true'
+        env:
+          # sem esse secret cadastrado, o build sai igual (telemetria embutida desligada) —
+          # ver o comentário do `define` em vite.config.ts
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: |
           npm ci
           npm run build
