@@ -1,10 +1,5 @@
 const TELEMETRY_ENABLED_KEY = 'awesometw:telemetry:enabled'
 const INSTALL_ID_KEY = 'awesometw:telemetry:install-id'
-const LAST_STATUS_PREFIX = 'awesometw:telemetry:last-status:'
-const LAST_HEARTBEAT_PREFIX = 'awesometw:telemetry:last-heartbeat:'
-
-/** Manda no máximo 1 evento de "saúde do ciclo" por dia por feature quando nada muda — só transições de estado furam essa espera. */
-const HEARTBEAT_INTERVAL_MS = 24 * 60 * 60 * 1000
 
 type GMXhrResponse = { status: number; statusText: string; responseText: string }
 
@@ -119,51 +114,5 @@ export function reportError(params: { feature: string; phase: string; error: unk
     message: `[${feature}] ${message}`,
     tags: { feature, phase },
     extra: stack ? { stack } : undefined,
-  })
-}
-
-/**
- * Decide se um ciclo merece virar evento: só em transição de estado (sucesso→falha ou
- * o contrário) ou heartbeat periódico — mantém o volume próximo de zero em instalações
- * saudáveis, mas ainda pega "o TW mudou algo e agora todo mundo tá falhando" na hora.
- * Atualiza o estado salvo como efeito colateral; exportada separada de `reportCycle` pra
- * dar pra testar essa decisão sem depender de DSN/rede.
- */
-export function shouldReportCycle(feature: string, success: boolean, now = Date.now()): boolean {
-  const statusKey = `${LAST_STATUS_PREFIX}${feature}`
-  const heartbeatKey = `${LAST_HEARTBEAT_PREFIX}${feature}`
-
-  const previousStatus = localStorage.getItem(statusKey)
-  const currentStatus = success ? 'success' : 'failure'
-  const isTransition = previousStatus !== null && previousStatus !== currentStatus
-
-  const lastHeartbeat = Number(localStorage.getItem(heartbeatKey) ?? 0)
-  const isHeartbeatDue = now - lastHeartbeat >= HEARTBEAT_INTERVAL_MS
-
-  localStorage.setItem(statusKey, currentStatus)
-  if (!isTransition && !isHeartbeatDue) return false
-
-  localStorage.setItem(heartbeatKey, String(now))
-  return true
-}
-
-export function reportCycle(params: {
-  feature: string
-  durationMs: number
-  success: boolean
-  itemsTotal?: number
-  itemsFailed?: number
-  /** ex: aldeias cujo assistente de saque não pôde ser buscado nesse ciclo (autofarm) */
-  villagesFailed?: number
-}): void {
-  const { feature, durationMs, success, itemsTotal, itemsFailed, villagesFailed } = params
-  if (!isTelemetryEnabled()) return
-  if (!shouldReportCycle(feature, success)) return
-
-  sendEvent({
-    level: success ? 'info' : 'warning',
-    message: `[${feature}] ciclo ${success ? 'concluído' : 'falhou'}`,
-    tags: { feature, success: String(success) },
-    extra: { durationMs, itemsTotal, itemsFailed, villagesFailed },
   })
 }
