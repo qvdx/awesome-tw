@@ -33,6 +33,12 @@ export default defineConfig({
         // (src/lib/telemetry.ts) — roda fora do contexto da página, então ignora o CSP
         // do jogo que bloquearia um fetch() puro pro Sentry.
         grant: ['unsafeWindow', 'GM_xmlhttpRequest'],
+        // Declara o host da telemetria de antemão — sem isso, o Tampermonkey pede
+        // confirmação em runtime na primeira vez que o script chama GM_xmlhttpRequest
+        // pra um domínio desconhecido (pop-up no meio da execução). Um domínio aqui já
+        // cobre os subdomínios (ex: o<id>.ingest.us.sentry.io), por documentação do
+        // próprio Tampermonkey.
+        connect: ['sentry.io'],
         updateURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
         downloadURL: 'https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js',
       },
