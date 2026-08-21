@@ -70,6 +70,16 @@ export function showAutoFarmBanner() {
     status.textContent = `próxima execução em ${formatCountdown(nextRunAt - Date.now())}`
   }
 
+  /** Para o ticker da contagem regressiva — necessário sempre que sair do estado "aguardando próxima execução",
+   * senão ele continua escrevendo por cima do texto de "verificando"/"enviando" a cada segundo. */
+  function stopCountdown() {
+    if (countdownIntervalId !== undefined) {
+      window.clearInterval(countdownIntervalId)
+      countdownIntervalId = undefined
+    }
+    nextRunAt = null
+  }
+
   function setStatusDot(state: 'checking' | 'sending' | 'idle') {
     statusDot.className = `${styles.statusDot} ${
       state === 'checking' ? styles.statusDotChecking : state === 'sending' ? styles.statusDotSending : styles.statusDotIdle
@@ -78,6 +88,7 @@ export function showAutoFarmBanner() {
 
   return {
     setChecking() {
+      stopCountdown()
       setStatusDot('checking')
       spinner.classList.add(styles.visible)
       track.hidden = true
@@ -94,6 +105,7 @@ export function showAutoFarmBanner() {
       }
     },
     setProgress(progress: AutoFarmProgress | null) {
+      stopCountdown()
       spinner.classList.remove(styles.visible)
 
       if (!progress || progress.total === 0) {
