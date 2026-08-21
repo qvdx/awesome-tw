@@ -1,0 +1,51 @@
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 4px 0 10px;
+  padding: 4px 10px;
+  border: 1px solid #7d510f;
+  border-radius: 3px;
+  background: #f4e4bc;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 11px;
+}
+
+.label {
+  flex-shrink: 0;
+  color: #603000;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.track {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(125, 81, 15, 0.15);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #7d510f;
+  transition: width 0.2s ease-out;
+}
+
+.stopButton {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border: 1px solid #a33;
+  border-radius: 3px;
+  background: rgba(170, 51, 51, 0.12);
+  color: #a33;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.stopButton:hover {
+  background: rgba(170, 51, 51, 0.24);
+}

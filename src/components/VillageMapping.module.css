@@ -100,6 +100,12 @@
   margin-top: 4px;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .refreshButton {
   display: inline-flex;
   align-items: center;
@@ -121,6 +127,10 @@
   opacity: 0.6;
 }
 
+.refreshButtonActive {
+  color: #00ffc8;
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -134,11 +144,153 @@
   animation: spin 0.6s linear infinite;
 }
 
-.searchInput {
-  box-sizing: border-box;
-  width: 100%;
+.spyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #baffe8;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.spyButton:hover:not(:disabled) {
+  color: #00ffc8;
+}
+
+.spyButton:disabled {
+  color: #3a4a45;
+  cursor: default;
+}
+
+.spyDialog {
   margin-top: 10px;
-  padding: 6px 10px;
+  padding: 10px;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  border-radius: 4px;
+  background: rgba(0, 255, 200, 0.04);
+}
+
+.spyDialogLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #baffe8;
+  font-size: 13.5px;
+}
+
+.spyDialogLabel .pointsInput {
+  flex: 0 0 80px;
+}
+
+.spyDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.spyDialogCancel {
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  border-radius: 3px;
+  background: transparent;
+  color: #5f8f7f;
+  font-family: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.spyDialogCancel:hover {
+  color: #baffe8;
+  border-color: rgba(0, 255, 200, 0.5);
+}
+
+.spyDialog .mapButton {
+  width: auto;
+  margin-top: 0;
+}
+
+.spyProgressWrap {
+  margin-top: 8px;
+}
+
+.spyProgressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.spyStopButton {
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 138, 148, 0.5);
+  border-radius: 3px;
+  background: rgba(255, 138, 148, 0.1);
+  color: #ff8a94;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.spyStopButton:hover {
+  background: rgba(255, 138, 148, 0.2);
+  border-color: #ff8a94;
+}
+
+.spyProgressFill {
+  height: 100%;
+  border-radius: 2px;
+  background: #00ffc8;
+  transition: width 0.2s ease-out;
+}
+
+.filtersRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.distanceSelect {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 6px 28px 6px 8px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background-color: #050505;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235f8f7f' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 13.5px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.distanceSelect:focus {
+  border-color: #00ffc8;
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+  outline: none;
+}
+
+.pointsInput {
+  flex: 1;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 6px 8px;
   border: 1px solid rgba(0, 255, 200, 0.4);
   border-radius: 3px;
   background: #050505;
@@ -150,7 +302,11 @@
     box-shadow 0.15s;
 }
 
-.searchInput:focus {
+.pointsInput::placeholder {
+  color: #5f8f7f;
+}
+
+.pointsInput:focus {
   border-color: #00ffc8;
   box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
   outline: none;
@@ -167,14 +323,56 @@
   font-size: 15px;
 }
 
+.villageColumn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
 .villageInfo {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+.bonusDescription {
+  padding-left: 32px;
+  color: #d99a3b;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.travelTimes {
+  display: flex;
+  align-self: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 32px;
+  padding: 5px 10px;
+  border: 1px solid rgba(0, 255, 200, 0.15);
+  border-radius: 8px;
+  background: rgba(0, 255, 200, 0.05);
+}
+
+.travelTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #5f8f7f;
+  font-size: 12px;
+}
+
+.travelIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
 .villageList {
   max-height: 320px;
+  padding-right: 10px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 255, 200, 0.45) rgba(0, 255, 200, 0.06);

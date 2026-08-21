@@ -50,7 +50,7 @@ export function Utilities({
   }
 
   const items: MenuItem[] = [
-    { label: 'Mapeamento de aldeias', onSelect: () => setScreen('mapping') },
+    { label: 'Mapeamento de aldeias bárbaras e bônus', onSelect: () => setScreen('mapping') },
     { label: 'Modificadores de tela', onSelect: () => setScreen('modifiers') },
   ]
 
