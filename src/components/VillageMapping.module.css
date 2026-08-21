@@ -1,0 +1,402 @@
+.back {
+  padding: 2px 0;
+  margin-bottom: 16px;
+  border: none;
+  background: transparent;
+  color: #00ffc8;
+  font-family: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: #baffe8;
+}
+
+.title {
+  margin: 0 0 6px;
+  color: #baffe8;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+
+.subtitle {
+  margin: 0 0 18px;
+  color: #5f8f7f;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.unit {
+  color: #5f8f7f;
+  font-size: 13px;
+}
+
+.errorText {
+  margin: 12px 0 0;
+  color: #ff8a94;
+  font-size: 13.5px;
+}
+
+.mapButton {
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px;
+  border: 1px solid rgba(0, 255, 200, 0.5);
+  border-radius: 3px;
+  background: rgba(0, 255, 200, 0.08);
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.mapButton:hover:not(:disabled) {
+  border-color: #00ffc8;
+  background: rgba(0, 255, 200, 0.14);
+  box-shadow: 0 0 8px rgba(0, 255, 176, 0.35);
+}
+
+.mapButton:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.progressTrack {
+  margin-top: 14px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 255, 200, 0.1);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 40%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #00ffc8, transparent);
+  animation: indeterminate 1.1s ease-in-out infinite;
+}
+
+@keyframes indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(350%);
+  }
+}
+
+.sectionHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.refreshButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #5f8f7f;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.refreshButton:hover:not(:disabled) {
+  color: #00ffc8;
+}
+
+.refreshButton:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.refreshButtonActive {
+  color: #00ffc8;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 0.6s linear infinite;
+}
+
+.spyButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #baffe8;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.spyButton:hover:not(:disabled) {
+  color: #00ffc8;
+}
+
+.spyButton:disabled {
+  color: #3a4a45;
+  cursor: default;
+}
+
+.spyDialog {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  border-radius: 4px;
+  background: rgba(0, 255, 200, 0.04);
+}
+
+.spyDialogLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: #baffe8;
+  font-size: 13.5px;
+}
+
+.spyDialogLabel .pointsInput {
+  flex: 0 0 80px;
+}
+
+.spyDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.spyDialogCancel {
+  padding: 8px 14px;
+  border: 1px solid rgba(0, 255, 200, 0.3);
+  border-radius: 3px;
+  background: transparent;
+  color: #5f8f7f;
+  font-family: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.spyDialogCancel:hover {
+  color: #baffe8;
+  border-color: rgba(0, 255, 200, 0.5);
+}
+
+.spyDialog .mapButton {
+  width: auto;
+  margin-top: 0;
+}
+
+.spyProgressWrap {
+  margin-top: 8px;
+}
+
+.spyProgressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.spyStopButton {
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 138, 148, 0.5);
+  border-radius: 3px;
+  background: rgba(255, 138, 148, 0.1);
+  color: #ff8a94;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+
+.spyStopButton:hover {
+  background: rgba(255, 138, 148, 0.2);
+  border-color: #ff8a94;
+}
+
+.spyProgressFill {
+  height: 100%;
+  border-radius: 2px;
+  background: #00ffc8;
+  transition: width 0.2s ease-out;
+}
+
+.filtersRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.distanceSelect {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 6px 28px 6px 8px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background-color: #050505;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235f8f7f' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 13.5px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.distanceSelect:focus {
+  border-color: #00ffc8;
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+  outline: none;
+}
+
+.pointsInput {
+  flex: 1;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 1px solid rgba(0, 255, 200, 0.4);
+  border-radius: 3px;
+  background: #050505;
+  color: #baffe8;
+  font-family: inherit;
+  font-size: 13.5px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.pointsInput::placeholder {
+  color: #5f8f7f;
+}
+
+.pointsInput:focus {
+  border-color: #00ffc8;
+  box-shadow: 0 0 6px rgba(0, 255, 200, 0.4);
+  outline: none;
+}
+
+.villageRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(0, 255, 200, 0.15);
+  color: #baffe8;
+  font-size: 15px;
+}
+
+.villageColumn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.villageInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bonusDescription {
+  padding-left: 32px;
+  color: #d99a3b;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.travelTimes {
+  display: flex;
+  align-self: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: 32px;
+  padding: 5px 10px;
+  border: 1px solid rgba(0, 255, 200, 0.15);
+  border-radius: 8px;
+  background: rgba(0, 255, 200, 0.05);
+}
+
+.travelTime {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #5f8f7f;
+  font-size: 12px;
+}
+
+.travelIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.villageList {
+  max-height: 320px;
+  padding-right: 10px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 200, 0.45) rgba(0, 255, 200, 0.06);
+}
+
+.villageList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.villageList::-webkit-scrollbar-track {
+  background: rgba(0, 255, 200, 0.06);
+  border-radius: 4px;
+}
+
+.villageList::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 200, 0.45);
+  border: 1px solid rgba(0, 255, 200, 0.15);
+  border-radius: 4px;
+}
+
+.villageList::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 200, 0.7);
+}
+
+.bonusTag {
+  color: #ffcb47;
+}

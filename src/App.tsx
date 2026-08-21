@@ -8,6 +8,7 @@ import { Menu, type MenuItem } from './components/Menu'
 import { Modal } from './components/Modal'
 import { Report } from './components/Report'
 import { Settings } from './components/Settings'
+import { Utilities } from './components/Utilities'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { useMountNode } from './hooks/useMountNode'
 import { useShortcutConfig } from './hooks/useShortcutConfig'
@@ -16,8 +17,9 @@ import { getPlayerName, getVillageId } from './lib/gameData'
 import { loadScavengeConfig } from './lib/scavengeConfig'
 import { startAutoScavengeLoops } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
+import { initTrainingQueueOverlay } from './lib/trainingQueueOverlay'
 
-type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations'
+type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations' | 'utilities'
 
 export function App() {
   const launcherMount = useMountNode('#questlog_new', 'start')
@@ -25,6 +27,10 @@ export function App() {
   const [screen, setScreen] = useState<Screen>('menu')
   const [shortcut, setShortcut] = useShortcutConfig()
   const [autoScavengeEnabled, setAutoScavengeEnabled] = useLocalStorage(featureStorageKey('auto-scavenge'), false)
+  const [trainingQueueOverlayEnabled, setTrainingQueueOverlayEnabled] = useLocalStorage(
+    featureStorageKey('overview-training-queue'),
+    false,
+  )
 
   useEffect(() => {
     function handleShortcut(event: KeyboardEvent) {
@@ -55,6 +61,11 @@ export function App() {
     return startAutoScavengeLoops(villageIds)
   }, [autoScavengeEnabled])
 
+  useEffect(() => {
+    if (!trainingQueueOverlayEnabled) return
+    return initTrainingQueueOverlay()
+  }, [trainingQueueOverlayEnabled])
+
   function handleClose() {
     setIsOpen(false)
     setScreen('menu')
@@ -62,7 +73,7 @@ export function App() {
 
   const menuItems: MenuItem[] = [
     { label: 'Automações', onSelect: () => setScreen('automations') },
-    { label: 'Utilitários', onSelect: () => console.log('[awesometw] abrir Utilitários') },
+    { label: 'Utilitários', onSelect: () => setScreen('utilities') },
     { label: 'Configurações', onSelect: () => setScreen('settings') },
     { label: 'Pague um café', onSelect: () => setScreen('coffee') },
     { label: 'Saiba mais', onSelect: () => setScreen('report') },
@@ -86,6 +97,13 @@ export function App() {
         )}
         {screen === 'coffee' && <Coffee onBack={() => setScreen('menu')} />}
         {screen === 'report' && <Report onBack={() => setScreen('menu')} />}
+        {screen === 'utilities' && (
+          <Utilities
+            trainingQueueOverlayEnabled={trainingQueueOverlayEnabled}
+            onChangeTrainingQueueOverlayEnabled={setTrainingQueueOverlayEnabled}
+            onBack={() => setScreen('menu')}
+          />
+        )}
         {screen === 'automations' && (
           <Automations
             autoScavengeEnabled={autoScavengeEnabled}

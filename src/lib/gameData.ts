@@ -4,8 +4,11 @@ type GameData = {
   }
   village?: {
     id?: number
+    x?: number
+    y?: number
   }
   units?: string[]
+  csrf?: string
 }
 
 declare global {
@@ -31,4 +34,15 @@ export function getUnitIds(): string[] {
 
 export function getVillageId(): number | null {
   return unsafeWindow.game_data?.village?.id ?? null
+}
+
+export function getVillageCoord(): { x: number; y: number } | null {
+  const village = unsafeWindow.game_data?.village
+  if (village?.x === undefined || village?.y === undefined) return null
+  return { x: village.x, y: village.y }
+}
+
+/** Token anti-CSRF fixo da sessão (`h` nos formulários do jogo) — não confundir com o `ch` do fluxo de confirmação de ataque, que é por-envio. */
+export function getCsrfToken(): string {
+  return unsafeWindow.game_data?.csrf ?? ''
 }

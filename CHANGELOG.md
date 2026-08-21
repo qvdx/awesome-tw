@@ -7,6 +7,19 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.7] - 2026-08-21
+
+### Adicionado
+
+- **Utilitários › Mapeamento de aldeias**: filtros por tipo (bárbara/bônus), distância e pontos (mínimo/máximo), escondidos por padrão atrás de um ícone de funil; tempo de viagem estimado (cavalaria leve, aríete, catapulta, nobre) calculado a partir da velocidade real das tropas do mundo; contador de aldeias selecionadas ao lado de "Selecionar todas"; e **espionagem em massa** — envia exploradores pra todas as aldeias selecionadas de uma vez, com quantidade configurável, intervalo aleatório entre os envios, botão de interromper e barra de progresso (tanto no menu quanto injetada na própria tela do jogo).
+- **Utilitários › Modificadores de tela**: nova seção com o toggle "Visualizar tropas em produção" — na Visão Geral (aba de Tropas), mostra quantas unidades cada aldeia tem na fila de recrutamento numa linha extra da tabela, com o total anotado em verde com a quantidade a caminho.
+
+## [0.1.0-alpha.6] - 2026-08-19
+
+### Adicionado
+
+- **Utilitários › Mapeamento de aldeias**: mapeia as aldeias bárbaras e bônus ao redor da aldeia atual, lendo os dados que a própria tela do Mapa do jogo já carrega (sem precisar navegar até lá). Lista ordenada por distância, com busca, cache (com botão de atualizar) e checkbox de seleção por aldeia (base pra ações em massa futuras). A aba Utilitários, que antes não fazia nada, ganhou sua primeira tela de verdade.
+
 ## [0.1.0-alpha.5] - 2026-08-19
 
 ### Alterado
@@ -42,7 +55,9 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.5...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.7...HEAD
+[0.1.0-alpha.7]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.6...v0.1.0-alpha.7
+[0.1.0-alpha.6]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.5...v0.1.0-alpha.6
 [0.1.0-alpha.5]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.4...v0.1.0-alpha.5
 [0.1.0-alpha.4]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.3...v0.1.0-alpha.4
 [0.1.0-alpha.3]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.2...v0.1.0-alpha.3
