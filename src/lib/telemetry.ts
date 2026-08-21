@@ -6,11 +6,14 @@ const LAST_HEARTBEAT_PREFIX = 'awesometw:telemetry:last-heartbeat:'
 /** Manda no máximo 1 evento de "saúde do ciclo" por dia por feature quando nada muda — só transições de estado furam essa espera. */
 const HEARTBEAT_INTERVAL_MS = 24 * 60 * 60 * 1000
 
+type GMXhrResponse = { status: number; statusText: string; responseText: string }
+
 type GMXhrDetails = {
   method: 'POST'
   url: string
   headers?: Record<string, string>
   data?: string
+  onload?: (response: GMXhrResponse) => void
   onerror?: (response: unknown) => void
 }
 
@@ -93,8 +96,16 @@ function sendEvent(event: TelemetryEvent): void {
     url: `https://${parsed.host}/api/${parsed.projectId}/envelope/`,
     headers: { 'Content-Type': 'application/x-sentry-envelope' },
     data: envelope,
-    // telemetria nunca pode derrubar a automação principal — falha de rede aqui é só ignorada
-    onerror: () => {},
+    // telemetria nunca pode derrubar a automação principal — por isso só loga, nunca lança.
+    // Sem isso, uma falha de envio (DSN errado, envelope rejeitado, rede) ficava invisível.
+    onload: (response) => {
+      if (response.status < 200 || response.status >= 300) {
+        console.error(`[awesometw] Sentry recusou o evento de telemetria (status ${response.status})`, response.responseText)
+      }
+    },
+    onerror: (response) => {
+      console.error('[awesometw] falha ao enviar evento de telemetria', response)
+    },
   })
 }
 
