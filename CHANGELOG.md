@@ -7,6 +7,12 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.11] - 2026-08-21
+
+### Corrigido
+
+- **Coleta automática**: o agendamento não sobrevivia a navegações — como o jogo recarrega a página inteira a cada troca de tela, a coleta disparava um ciclo novo do zero toda vez, mesmo sem nada pendente pra enviar (visível nos dados de uso: vários eventos de ciclo em sequência rápida, sem ligação com o horário real de retorno das tropas). Agora persiste o próximo horário por aldeia entre navegações, mesmo padrão já usado pelo autofarm.
+
 ## [0.1.0-alpha.10] - 2026-08-21
 
 ### Adicionado
@@ -80,7 +86,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.10...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.11...HEAD
+[0.1.0-alpha.11]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.10...v0.1.0-alpha.11
 [0.1.0-alpha.10]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.9...v0.1.0-alpha.10
 [0.1.0-alpha.9]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.8...v0.1.0-alpha.9
 [0.1.0-alpha.8]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.7...v0.1.0-alpha.8
