@@ -6,6 +6,8 @@
 
 Userscript para o [Tribal Wars](https://www.tribalwars.com.br/) que adiciona um menu direto no jogo, com automações pra facilitar o dia a dia.
 
+![Uma nave alienígena abduzindo uma casa, aldeões e uma vaca de uma aldeia medieval, com guardas em pânico observando de baixo](./assets/awesome-tw.png)
+
 > *"Elas vieram do céu, levaram os celeiros e as muralhas — e deixaram pra trás aldeões que não erram mais uma conta de saque. Não sei o que fizeram lá em cima. Só sei que não sou mais eu que preciso ficar acordado calculando isso."*
 
 ## Funcionalidades
