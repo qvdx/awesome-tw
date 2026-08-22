@@ -18,6 +18,9 @@ coverage
 !.vscode/extensions.json
 .idea
 .DS_Store
+
+# Metadado do WSL/Windows em arquivo baixado do navegador — não é conteúdo de verdade
+*:Zone.Identifier
 *.suo
 *.ntvs*
 *.njsproj
