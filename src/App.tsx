@@ -19,11 +19,17 @@ import { countActiveFeatures } from './lib/features'
 import { getPlayerName, getVillageId } from './lib/gameData'
 import { initIncomingFarmingResources } from './lib/incomingFarmingResources'
 import { loadScavengeConfig } from './lib/scavengeConfig'
-import { startAutoScavengeLoops } from './lib/scavengeScheduler'
+import { resetAutoScavengeSchedule, startAutoScavengeLoops } from './lib/scavengeScheduler'
 import { matchesShortcut } from './lib/shortcut'
 import { initTrainingQueueOverlay } from './lib/trainingQueueOverlay'
 
 type Screen = 'menu' | 'settings' | 'coffee' | 'report' | 'automations' | 'utilities'
+
+/** Vazio na config = roda só na aldeia da aba aberta; senão, roda nas aldeias selecionadas. */
+function resolveScavengeVillageIds(): number[] {
+  const config = loadScavengeConfig()
+  return config.villageIds.length > 0 ? config.villageIds : [getVillageId()].filter((id): id is number => id !== null)
+}
 
 export function App() {
   const launcherMount = useMountNode('#questlog_new', 'start')
@@ -39,6 +45,12 @@ export function App() {
   function handleChangeAutoFarmEnabled(enabled: boolean) {
     if (enabled) resetAutoFarmSchedule()
     setAutoFarmEnabled(enabled)
+  }
+
+  // mesmo motivo do autofarm acima, só que por aldeia — a coleta roda um loop independente por aldeia
+  function handleChangeAutoScavengeEnabled(enabled: boolean) {
+    if (enabled) resetAutoScavengeSchedule(resolveScavengeVillageIds())
+    setAutoScavengeEnabled(enabled)
   }
   const [trainingQueueOverlayEnabled, setTrainingQueueOverlayEnabled] = useFeatureToggle('overview-training-queue', false)
   const [incomingFarmingResourcesEnabled, setIncomingFarmingResourcesEnabled] = useFeatureToggle(
@@ -63,9 +75,7 @@ export function App() {
   useEffect(() => {
     if (!autoScavengeEnabled) return
 
-    const config = loadScavengeConfig()
-    const villageIds =
-      config.villageIds.length > 0 ? config.villageIds : [getVillageId()].filter((id): id is number => id !== null)
+    const villageIds = resolveScavengeVillageIds()
 
     if (villageIds.length === 0) {
       console.error('[awesometw] não achei nenhuma aldeia pra rodar a coleta automática')
@@ -153,7 +163,7 @@ export function App() {
         {screen === 'automations' && (
           <Automations
             autoScavengeEnabled={autoScavengeEnabled}
-            onChangeAutoScavengeEnabled={setAutoScavengeEnabled}
+            onChangeAutoScavengeEnabled={handleChangeAutoScavengeEnabled}
             autoFarmEnabled={autoFarmEnabled}
             onChangeAutoFarmEnabled={handleChangeAutoFarmEnabled}
             onBack={() => setScreen('menu')}
