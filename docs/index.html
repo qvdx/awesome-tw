@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AwesomeTW — Userscript para o Tribal Wars</title>
+<meta name="description" content="Userscript para o Tribal Wars que adiciona um menu direto no jogo, com automações de autofarm, coleta e mapeamento pra facilitar o dia a dia." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%9B%B8</text></svg>" />
+<style>
+  :root {
+    --bg: #0b0d17;
+    --bg-elevated: #12152400;
+    --panel: #151a2b;
+    --panel-border: #262c44;
+    --text: #e7e9f5;
+    --text-muted: #9ba0bf;
+    --accent: #7cf7c4;
+    --accent-strong: #4ee6a8;
+    --accent-soft: rgba(124, 247, 196, 0.12);
+    --link: #8fb4ff;
+    --shadow: 0 20px 60px -30px rgba(0, 0, 0, 0.7);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(ellipse 800px 500px at 15% -10%, rgba(124, 247, 196, 0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(143, 180, 255, 0.10), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  header.hero {
+    padding: 72px 0 40px;
+    text-align: center;
+  }
+
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 999px;
+    padding: 4px 12px;
+  }
+
+  .badge img { display: block; height: 16px; }
+
+  .hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--text) 20%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero p.tagline {
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    color: var(--text-muted);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .hero-img {
+    width: 100%;
+    max-width: 720px;
+    margin: 40px auto 0;
+    display: block;
+    border-radius: 16px;
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow);
+  }
+
+  blockquote.flavor {
+    max-width: 640px;
+    margin: 32px auto 0;
+    padding: 18px 22px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 4px 12px 12px 4px;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: left;
+  }
+
+  .cta-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 36px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 13px 24px;
+    border-radius: 10px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-strong), var(--accent));
+    color: #071510;
+    box-shadow: 0 12px 30px -10px rgba(78, 230, 168, 0.45);
+  }
+
+  .btn-secondary {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--panel-border);
+  }
+
+  section {
+    padding: 56px 0;
+    border-top: 1px solid var(--panel-border);
+  }
+
+  section h2 {
+    font-size: 1.6rem;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  section > p.section-lead {
+    color: var(--text-muted);
+    margin: 0 0 32px;
+    max-width: 620px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .steps a { color: var(--link); }
+
+  .support-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .support-list li {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.95rem;
+  }
+
+  .support-list strong { color: var(--text); }
+  .support-list a { color: var(--link); text-decoration: none; }
+  .support-list a:hover { text-decoration: underline; }
+
+  footer {
+    padding: 40px 0 60px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  footer a { color: var(--link); }
+
+  @media (max-width: 600px) {
+    header.hero { padding: 48px 0 24px; }
+    section { padding: 40px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="badge-row">
+      <span class="badge"><img src="https://img.shields.io/github/v/release/qvdx/awesome-tw" alt="release" /></span>
+      <span class="badge"><img src="https://img.shields.io/github/downloads/qvdx/awesome-tw/total" alt="downloads" /></span>
+      <span class="badge"><img src="https://img.shields.io/github/license/qvdx/awesome-tw" alt="license" /></span>
+    </div>
+
+    <h1>AwesomeTW</h1>
+    <p class="tagline">
+      Userscript para o <a href="https://www.tribalwars.com.br/" style="color: inherit">Tribal Wars</a> que adiciona um menu direto no jogo, com automações pra facilitar o dia a dia.
+    </p>
+
+    <img class="hero-img" src="./assets/awesome-tw.png" alt="Uma nave alienígena abduzindo uma casa, aldeões e uma vaca de uma aldeia medieval, com guardas em pânico observando de baixo" />
+
+    <blockquote class="flavor">
+      "Elas vieram do céu, levaram os celeiros e as muralhas — e deixaram pra trás aldeões que não erram mais uma conta de saque. Não sei o que fizeram lá em cima. Só sei que não sou mais eu que preciso ficar acordado calculando isso."
+    </blockquote>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js">
+        ⬇ Instalar o AwesomeTW
+      </a>
+      <a class="btn btn-secondary" href="https://github.com/qvdx/awesome-tw">
+        ⭐ Ver no GitHub
+      </a>
+    </div>
+  </header>
+
+  <section id="funcionalidades">
+    <h2>Funcionalidades</h2>
+    <p class="section-lead">Automações que rodam sozinhas e utilitários que economizam clique.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>🌾 Autofarm</h3>
+        <p>Lê o assistente de saque, decide entre os modelos A e C sozinho, ordena alvos por eficiência (recurso ÷ distância) e coordena entre todas as aldeias pra nunca mirar o mesmo alvo duas vezes.</p>
+      </div>
+      <div class="card">
+        <h3>⛏️ Coleta automática</h3>
+        <p>Descobre os níveis de coleta desbloqueados, distribui as tropas escolhidas entre eles pra voltarem juntas e já manda a próxima leva assim que uma retorna — sem precisar ficar de olho.</p>
+      </div>
+      <div class="card">
+        <h3>🗺️ Mapeamento de aldeias</h3>
+        <p>Mapeia bárbaras e bônus ao redor da aldeia atual sem abrir o Mapa, com filtros, tempo de viagem por tropa e espionagem em massa com barra de progresso.</p>
+      </div>
+      <div class="card">
+        <h3>👁️ Modificadores de tela</h3>
+        <p>Mostra na Visão Geral quantas unidades cada aldeia tem em produção e quanto de recurso está a caminho nos saques que ainda não voltaram.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="instalacao">
+    <h2>Instalação</h2>
+    <p class="section-lead">A nave já passou. A tecnologia ficou. Falta só instalar:</p>
+
+    <ol class="steps">
+      <li>Instale a extensão <a href="https://www.tampermonkey.net/">Tampermonkey</a>.</li>
+      <li><a href="https://github.com/qvdx/awesome-tw/releases/latest/download/awesometw.user.js">Clique aqui para instalar o AwesomeTW</a>.</li>
+      <li>Abra o jogo — um novo ícone (☠) aparece junto com o ícone das missões.</li>
+    </ol>
+    <p class="section-lead" style="margin-top: 16px; margin-bottom: 0;">Atualizações futuras chegam automaticamente pelo próprio Tampermonkey.</p>
+  </section>
+
+  <section id="suporte">
+    <h2>Suporte</h2>
+    <p class="section-lead">Achou um bug ou tem uma sugestão? Usa a opção <strong>Reportar um problema</strong> no próprio menu do script, ou escolhe o canal que preferir:</p>
+
+    <ul class="support-list">
+      <li><strong>E-mail</strong> — pra um bug bem detalhado, com print e tudo: <a href="mailto:qualvalordex@gmail.com">qualvalordex@gmail.com</a></li>
+      <li><strong>Reddit</strong> — pra bater um papo rápido ou só mandar um oi: <a href="https://www.reddit.com/user/qvdx">u/qvdx</a></li>
+      <li><strong>GitHub</strong> — pra quem já sabe exatamente o que quer reportar, ou só quer dar uma olhada no código: <a href="https://github.com/qvdx">qvdx</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    Distribuído sob a licença <a href="https://github.com/qvdx/awesome-tw/blob/main/LICENSE">MIT</a>.
+    Código-fonte em <a href="https://github.com/qvdx/awesome-tw">github.com/qvdx/awesome-tw</a>.
+  </footer>
+</div>
+
+</body>
+</html>
