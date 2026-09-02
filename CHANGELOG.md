@@ -7,6 +7,10 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+### Alterado
+
+- **Coleta automática**: o campo "Rodar a cada" virou "Tempo máximo de coleta" — antes só controlava um fallback raro de reagendamento, agora é um teto de verdade: a alocação de tropa manda só o suficiente pra bater esse prazo, deixando o resto de reserva em casa, em vez de sempre escoar toda a tropa disponível. Configs salvas antes dessa mudança caem no novo default (6h).
+
 ## [0.1.0-alpha.11] - 2026-08-21
 
 ### Corrigido
