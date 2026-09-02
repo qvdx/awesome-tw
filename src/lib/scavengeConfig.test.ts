@@ -17,7 +17,7 @@ describe('loadScavengeConfig / saveScavengeConfig', () => {
   })
 
   it('faz round-trip: o que é salvo é o que volta ao carregar', () => {
-    const custom = { ...DEFAULT_SCAVENGE_CONFIG, intervalHours: 6, autoUnlock: true, configured: true }
+    const custom = { ...DEFAULT_SCAVENGE_CONFIG, maxDurationHours: 8, autoUnlock: true, configured: true }
     saveScavengeConfig(custom)
     expect(loadScavengeConfig()).toEqual(custom)
   })
@@ -28,5 +28,14 @@ describe('loadScavengeConfig / saveScavengeConfig', () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(legacyConfig))
 
     expect(loadScavengeConfig().villageIds).toEqual([])
+  })
+
+  it('config salva com o antigo intervalHours (pré-teto-de-duração) cai no default de maxDurationHours', () => {
+    // simula uma config salva por uma versão anterior, antes da troca de
+    // semântica de "rodar a cada" pra "tempo máximo de coleta" — os valores
+    // não são intercambiáveis, então não faz sentido migrar um pro outro
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ intervalHours: 3, autoUnlock: true, configured: true }))
+
+    expect(loadScavengeConfig().maxDurationHours).toBe(DEFAULT_SCAVENGE_CONFIG.maxDurationHours)
   })
 })
