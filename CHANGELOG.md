@@ -7,6 +7,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [0.1.0-alpha.12] - 2026-09-02
+
 ### Alterado
 
 - **Coleta automática**: o campo "Rodar a cada" virou "Tempo máximo de coleta" — antes só controlava um fallback raro de reagendamento, agora é um teto de verdade: a alocação de tropa manda só o suficiente pra bater esse prazo, deixando o resto de reserva em casa, em vez de sempre escoar toda a tropa disponível. Configs salvas antes dessa mudança caem no novo default (6h).
@@ -90,7 +92,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Tela "Pague um café" com QR code Pix gerado inteiramente no cliente (sem terceiros).
 - Tela "Reportar um problema" com contato por e-mail, Reddit e GitHub.
 
-[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.11...HEAD
+[Não lançado]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.12...HEAD
+[0.1.0-alpha.12]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.11...v0.1.0-alpha.12
 [0.1.0-alpha.11]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.10...v0.1.0-alpha.11
 [0.1.0-alpha.10]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.9...v0.1.0-alpha.10
 [0.1.0-alpha.9]: https://github.com/qvdx/awesome-tw/compare/v0.1.0-alpha.8...v0.1.0-alpha.9
