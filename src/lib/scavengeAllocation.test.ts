@@ -107,7 +107,33 @@ describe('planScavengeSquads', () => {
     // com só um nível, o alvo de carga acaba cobrindo tudo que tem disponível
     // (heavy + light) — mas heavy, primeiro na prioridade, é preenchido até o
     // limite disponível antes de qualquer light entrar no esquadrão.
-    const plan = planScavengeSquads([LEVEL_1], { heavy: 10, light: 10 }, ['heavy', 'light'])
+    const plan = planScavengeSquads([LEVEL_1], { heavy: 10, light: 10 }, { unitPriority: ['heavy', 'light'] })
     expect(plan[LEVEL_1.level]?.heavy).toBe(10)
+  })
+
+  it('sem teto de duração, usa (quase) toda a tropa disponível', () => {
+    const plan = planScavengeSquads([LEVEL_1], { heavy: 100 })
+    expect(plan[LEVEL_1.level]?.heavy).toBeGreaterThan(90)
+  })
+
+  it('com teto de duração apertado, manda menos tropa do que o disponível pra não estourar o prazo', () => {
+    const withoutCap = planScavengeSquads([LEVEL_1], { heavy: 1000 })
+    const heavyWithoutCap = withoutCap[LEVEL_1.level]?.heavy ?? 0
+
+    // teto de 40min: só 10min a mais que o tempo-base (30min) do nível, então
+    // dá pra carregar bem menos do que os 1000 heavy disponíveis
+    const withCap = planScavengeSquads([LEVEL_1], { heavy: 1000 }, { maxDurationSeconds: 40 * 60 })
+    const heavyWithCap = withCap[LEVEL_1.level]?.heavy ?? 0
+
+    expect(heavyWithCap).toBeLessThan(heavyWithoutCap)
+    expect(heavyWithCap).toBeGreaterThan(0)
+
+    const durationWithCap = calcDurationSeconds(heavyWithCap * UNIT_CARRY.heavy, LEVEL_1)
+    expect(durationWithCap).toBeLessThanOrEqual(40 * 60)
+  })
+
+  it('teto de duração igual ou abaixo do tempo-base do nível não manda nenhuma tropa', () => {
+    const plan = planScavengeSquads([LEVEL_1], { heavy: 1000 }, { maxDurationSeconds: LEVEL_1.durationInitialSeconds })
+    expect(plan[LEVEL_1.level]?.heavy ?? 0).toBe(0)
   })
 })

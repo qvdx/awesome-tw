@@ -21,7 +21,8 @@ export type TroopRule = {
 }
 
 export type ScavengeConfig = {
-  intervalHours: number
+  /** Teto de duração do ciclo de coleta, em horas — não manda tropa a mais que isso faria voltar depois do prazo. */
+  maxDurationHours: number
   autoUnlock: boolean
   troops: Record<UnitId, TroopRule>
   /** vazio = comportamento antigo (só a aldeia da aba aberta); não-vazio = roda só nessas aldeias */
@@ -31,7 +32,7 @@ export type ScavengeConfig = {
 }
 
 export const DEFAULT_SCAVENGE_CONFIG: ScavengeConfig = {
-  intervalHours: 3,
+  maxDurationHours: 6,
   autoUnlock: false,
   troops: {
     spear: { enabled: false, reserve: 0 },

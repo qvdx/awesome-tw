@@ -8,8 +8,16 @@ import { reportError } from './telemetry'
 /** Folga depois do horário de retorno da leva mais demorada, pra dar tempo do servidor processar o "chegou". */
 const RETURN_BUFFER_MS = 60_000
 
-/** Quando não tem nenhuma coleta ativa pra ancorar o próximo ciclo (ex: sem tropa disponível ainda). */
+/** Retry rápido depois de um ciclo que falhou com erro. */
 const MIN_FALLBACK_MS = 60_000
+
+/**
+ * Quando não tem nenhuma coleta ativa pra ancorar o próximo ciclo (ex: sem
+ * tropa disponível ainda, ou o teto de duração configurado é tão curto que
+ * nenhum nível recebeu tropa). Não depende mais de `maxDurationHours` — esse
+ * campo agora é só o teto de duração da coleta, não um intervalo de retry.
+ */
+const NO_ACTIVE_RETRY_MS = 30 * 60 * 1000
 
 /** Uma chave por aldeia — diferente do autofarm, a coleta roda um loop independente por aldeia. */
 function nextRunKey(villageId: number): string {
@@ -42,8 +50,7 @@ export function resetAutoScavengeSchedule(villageIds: number[]): void {
  * "Coleta infinita": dispara um ciclo e, a partir do horário de retorno da
  * leva mais demorada (usando o relógio do servidor, não o do navegador), já
  * se reagenda pro próximo ciclo sozinho. Se não tem nada ativo pra ancorar
- * (ex: nenhuma tropa disponível ainda), cai no intervalo de Configurações
- * como fallback.
+ * (ex: nenhuma tropa disponível ainda), tenta de novo em `NO_ACTIVE_RETRY_MS`.
  *
  * O jogo não é uma SPA — cada navegação recarrega a página inteira e reseta
  * todo o contexto JS. Pra não disparar um ciclo novo (e um evento de
@@ -83,7 +90,7 @@ export function startAutoScavengeLoop(villageId: number): () => void {
         const maxReturnMs = Math.max(...activeReturnTimes) * 1000
         delayMs = Math.max(0, maxReturnMs - state.timeGeneratedMs) + RETURN_BUFFER_MS
       } else {
-        delayMs = Math.max(MIN_FALLBACK_MS, config.intervalHours * 60 * 60 * 1000)
+        delayMs = NO_ACTIVE_RETRY_MS
       }
 
       trackCycle({

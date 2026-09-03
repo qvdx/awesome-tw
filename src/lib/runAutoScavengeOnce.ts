@@ -10,7 +10,7 @@ import { buildSquadRequests, sendScavengeSquads, type SendSquadsResponse } from 
  */
 export async function runAutoScavengeOnce(
   villageId: number,
-  config: Pick<ScavengeConfig, 'troops' | 'autoUnlock'>,
+  config: Pick<ScavengeConfig, 'troops' | 'autoUnlock' | 'maxDurationHours'>,
 ): Promise<SendSquadsResponse> {
   if (config.autoUnlock) {
     const state = await fetchScavengeVillageState(villageId)
@@ -18,7 +18,7 @@ export async function runAutoScavengeOnce(
     if (target) await startUnlockLevel(villageId, target.level)
   }
 
-  const { plan, unitCarryFactor } = await planAutoScavenge(villageId, config.troops)
+  const { plan, unitCarryFactor } = await planAutoScavenge(villageId, config.troops, config.maxDurationHours)
   const requests = buildSquadRequests(villageId, plan, unitCarryFactor)
   return sendScavengeSquads(requests)
 }

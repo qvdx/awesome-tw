@@ -101,19 +101,22 @@ export function ScavengeSettings({ onBack }: ScavengeSettingsProps) {
 
       <h4 className={styles.sectionTitle}>GERAL</h4>
       <div className={styles.row}>
-        <span>Rodar a cada</span>
+        <span>Tempo máximo de coleta</span>
         <div className={styles.intervalControl}>
           <input
             type="number"
-            min={0.5}
+            min={1}
             step={0.5}
             className={styles.numberInput}
-            value={config.intervalHours}
-            onChange={(event) => handleChange({ intervalHours: Number(event.target.value) || 0 })}
+            value={config.maxDurationHours}
+            onChange={(event) => handleChange({ maxDurationHours: Number(event.target.value) || 0 })}
           />
           <span className={styles.unit}>horas</span>
         </div>
       </div>
+      <p className={styles.unit}>
+        Não manda tropa a mais do que esse tempo dá pra coletar — o resto fica de reserva em casa.
+      </p>
 
       <div className={styles.rowCheckbox}>
         <Checkbox

@@ -88,6 +88,20 @@ export function computeAvailableUnitPool(
   return pool
 }
 
+export type PlanScavengeSquadsOptions = {
+  /** Ordem de preferência das unidades ao preencher os esquadrões. */
+  unitPriority?: UnitId[]
+  /**
+   * Teto de duração do ciclo, em segundos — nenhum esquadrão é montado pra
+   * demorar mais que isso. Quando o teto é menor que o tempo que o total de
+   * tropa disponível daria pra usar, sobra tropa parada em casa de propósito
+   * (o objetivo é liberar as tropas pra outra coisa dentro do prazo, não
+   * escoar o estoque inteiro). `undefined` mantém o comportamento antigo: usa
+   * o máximo de tropa disponível, sem teto de tempo.
+   */
+  maxDurationSeconds?: number
+}
+
 /**
  * Distribui as tropas disponíveis entre os níveis de coleta desbloqueados pra
  * que todos terminem por volta do mesmo horário. Níveis com loot_factor maior
@@ -98,8 +112,10 @@ export function computeAvailableUnitPool(
 export function planScavengeSquads(
   unlockedLevels: ScavengeLevelConfig[],
   availableUnits: UnitPool,
-  unitPriority: UnitId[] = ['heavy', 'light', 'axe', 'spear', 'sword'],
+  options: PlanScavengeSquadsOptions = {},
 ): ScavengeSquadPlan {
+  const { unitPriority = ['heavy', 'light', 'axe', 'spear', 'sword'], maxDurationSeconds } = options
+
   const plan: ScavengeSquadPlan = {}
   unlockedLevels.forEach((level) => {
     plan[level.level] = {}
@@ -110,7 +126,9 @@ export function planScavengeSquads(
   const totalCarryBudget = unitPriority.reduce((sum, unit) => sum + (remaining[unit] ?? 0) * UNIT_CARRY[unit], 0)
   if (totalCarryBudget <= 0) return plan
 
-  const targetDuration = findBalancedDuration(unlockedLevels, totalCarryBudget)
+  const balancedDuration = findBalancedDuration(unlockedLevels, totalCarryBudget)
+  const targetDuration =
+    maxDurationSeconds !== undefined ? Math.min(balancedDuration, maxDurationSeconds) : balancedDuration
   const carryTargets = new Map(
     unlockedLevels.map((level) => [level.level, calcCarryMaxForDuration(targetDuration, level)]),
   )
